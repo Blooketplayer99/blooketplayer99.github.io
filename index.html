@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Google Drive - My Files</title>
     <style>
-        /* All-in-One Style for iPad */
         body { background: #0f172a; color: white; font-family: -apple-system, sans-serif; text-align: center; margin: 0; }
         header { background: #1e293b; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; padding: 20px; }
         .card { background: #334155; border-radius: 12px; padding: 15px; cursor: pointer; border: 1px solid #475569; transition: 0.2s; }
-        .card:hover { transform: scale(1.05); background: #38bdf8; }
+        .card:hover { transform: scale(1.05); background: #38bdf8; border-color: white; }
         #gameOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; }
         iframe { width: 100%; height: 100%; border: none; background: #000; }
         .close-btn { position: absolute; top: 10px; left: 10px; padding: 10px 15px; background: #ef4444; color: white; border-radius: 8px; cursor: pointer; z-index: 1001; border: none; font-weight: bold; }
@@ -24,38 +23,37 @@
     </header>
 
     <div class="grid">
-        <!-- 1. SLOPE MOBILE (Touch Version) -->
-        <div class="card" onclick="openGame('https://math-maverick.github.io')">
+        <!-- 1. SLOPE MOBILE (Verified 2026 Touch Mirror) -->
+        <div class="card" onclick="openGame('https://unblocked-slope.github.io/')">
             <h3>Slope Mobile</h3>
         </div>
 
-        <!-- 2. SPACE WAVES (Your favorite working link) -->
-        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')">
+        <!-- 2. SPACE WAVES (Stable link) -->
+        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io/')">
             <h3>Space Waves</h3>
         </div>
 
-        <!-- 3. RETRO BOWL (Direct 2026 Mirror) -->
-        <div class="card" onclick="openGame('https://debbiewatermanphd.com')">
+        <!-- 3. RETRO BOWL (Official Web Stable Mirror) -->
+        <div class="card" onclick="openGame('https://retrobowl.me')">
             <h3>Retro Bowl</h3>
         </div>
 
-        <!-- 4. SUBWAY SURFERS (Direct Mirror) -->
-        <div class="card" onclick="openGame('https://monitored-research.github.io')">
+        <!-- 4. SUBWAY SURFERS (Direct WebGL link) -->
+        <div class="card" onclick="openGame('https://rohanchacko.github.io')">
             <h3>Subway Surfers</h3>
         </div>
 
-        <!-- 5. BITLIFE (Direct Mirror) -->
-        <div class="card" onclick="openGame('https://bitlife-online.github.io')">
+        <!-- 5. BITLIFE (Direct Mirror link) -->
+        <div class="card" onclick="openGame('https://bitlife-online.github.io/')">
             <h3>BitLife</h3>
         </div>
 
-        <!-- 6. 2048 (Working Link) -->
+        <!-- 6. 2048 (Official Stable link) -->
         <div class="card" onclick="openGame('https://mgarciaisaia.github.io')">
             <h3>2048</h3>
         </div>
     </div>
 
-    <!-- The Popup Game Player -->
     <div id="gameOverlay">
         <button class="close-btn" onclick="closeGame()">[X] CLOSE</button>
         <iframe id="gameFrame" src="" allow="autoplay; fullscreen; keyboard; touch" allowfullscreen></iframe>
@@ -72,7 +70,6 @@
             document.getElementById('gameFrame').src = ''; 
             document.body.style.overflow = 'auto'; 
         }
-        // Panic Key
         document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") { window.location.replace("https://classroom.google.com"); }
         });
