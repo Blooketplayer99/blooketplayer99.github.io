@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Unblocked Games</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Game Hub</h1>
+    
+    <!-- Game Navigation Menu -->
+    <div class="menu">
+        <button onclick="loadGame('https://example.com')">Game 1</button>
+        <button onclick="loadGame('https://example.com')">Game 2</button>
+        <button onclick="loadGame('https://example.com')">Game 3</button>
+    </div>
+
+    <!-- The Game Player -->
+    <div id="gameContainer">
+        <iframe id="gameFrame" src="" width="800" height="600" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        function loadGame(url) {
+            document.getElementById('gameFrame').src = url;
+        }
+    </script>
+</body>
+</html>
