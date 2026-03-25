@@ -3,59 +3,60 @@
 <head>
     <title>Google Drive - My Files</title>
     <style>
-        /* CSS Styles - All in one place for iPad users */
-        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; margin: 0; }
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
         header { background: #1e293b; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; padding: 20px; }
         .card { background: #334155; border-radius: 10px; padding: 10px; cursor: pointer; transition: 0.2s; }
         .card:hover { transform: scale(1.05); background: #38bdf8; }
         .card img { width: 100%; border-radius: 8px; }
-        
-        /* The Game Overlay */
         #gameOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 100; }
         iframe { width: 100%; height: 100%; border: none; }
-        .close-btn { position: absolute; top: 10px; left: 10px; padding: 8px 15px; background: red; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; z-index: 101; }
+        .close-btn { position: absolute; top: 10px; left: 10px; padding: 8px 15px; background: #ef4444; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; z-index: 101; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>BlooketPlayer99 Hub</h1>
-        <p>Tap a game to play! (Press <b>ESC</b> to Panic)</p>
+        <p>Press <b>ESC</b> for Emergency Panic Button</p>
     </header>
 
     <div class="grid">
-        <!-- Game 1: The Impossible Quiz -->
+        <!-- GAME 1: SPACE WAVES (Confirmed Working 2026) -->
+        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io/')">
+            <img src="https://via.placeholder.com" alt="Space Waves">
+            <p>Space Waves</p>
+        </div>
+
+        <!-- GAME 2: CLASSIC TETRIS (Confirmed Working) -->
+        <div class="card" onclick="openGame('https://chvin.github.io')">
+            <img src="https://via.placeholder.com" alt="Tetris">
+            <p>Tetris</p>
+        </div>
+
+        <!-- GAME 3: THE IMPOSSIBLE QUIZ (Mirrored URL) -->
         <div class="card" onclick="openGame('https://theimpossiblequiz-online.github.io')">
             <img src="https://via.placeholder.com" alt="Quiz">
             <p>Impossible Quiz</p>
         </div>
-
-        <!-- Game 2: Example (Slope) -->
-        <div class="card" onclick="openGame('https://kbhgames.com')">
-            <img src="https://via.placeholder.com" alt="Slope">
-            <p>Slope</p>
-        </div>
     </div>
 
-    <!-- This is where the game pops up -->
     <div id="gameOverlay">
         <div class="close-btn" onclick="closeGame()">X Close</div>
-        <iframe id="gameFrame" src=""></iframe>
+        <iframe id="gameFrame" src="" allowfullscreen></iframe>
     </div>
 
     <script>
         function openGame(url) {
-            document.getElementById('gameFrame').src = url;
-            document.getElementById('gameOverlay').style.display = 'block';
+            const frame = document.getElementById('gameFrame');
+            const overlay = document.getElementById('gameOverlay');
+            frame.src = url;
+            overlay.style.display = 'block';
         }
-
         function closeGame() {
             document.getElementById('gameOverlay').style.display = 'none';
             document.getElementById('gameFrame').src = '';
         }
-
-        // Panic Button (Works if you have a keyboard connected to iPad)
         document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") {
                 window.location.replace("https://classroom.google.com");
