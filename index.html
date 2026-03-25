@@ -3,48 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com">
     <title>Google Drive - My Files</title>
     <style>
-        body { background: #0f172a; color: white; font-family: -apple-system, sans-serif; text-align: center; margin: 0; overflow: hidden; }
-        header { background: #1e293b; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        body { background: #0f172a; color: white; font-family: -apple-system, sans-serif; text-align: center; margin: 0; overflow: hidden; touch-action: manipulation; }
+        header { background: #1e293b; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; padding: 20px; height: 80vh; overflow-y: auto; }
-        .card { background: #334155; border-radius: 12px; padding: 15px; cursor: pointer; border: 1px solid #475569; transition: 0.2s; }
+        .card { background: #334155; border-radius: 12px; padding: 15px; cursor: pointer; border: 1px solid #475569; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
         .card:hover { transform: scale(1.05); background: #38bdf8; }
         #gameOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; }
         iframe { width: 100%; height: 100%; border: none; background: #000; }
-        .close-btn { position: absolute; top: 10px; left: 10px; padding: 10px 15px; background: #ef4444; color: white; border-radius: 8px; cursor: pointer; z-index: 1001; border: none; font-weight: bold; }
+        .close-btn { position: absolute; top: 10px; left: 10px; padding: 12px 18px; background: #ef4444; color: white; border-radius: 8px; cursor: pointer; z-index: 1001; border: none; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Tapping the header on mobile acts as a manual panic button -->
+    <header onclick="panic()">
         <h1>BlooketPlayer99 Hub</h1>
-        <p>Tap a card to start. Press <b>ESC</b> to Panic.</p>
+        <p>Tap a card to start. <b>Triple-tap</b> or <b>ESC</b> to Panic.</p>
     </header>
 
     <div class="grid">
-        <!-- SPACE WAVES (Verified Stable) -->
-        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io/')">
+        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')">
             <h3>Space Waves</h3>
         </div>
-
-        <!-- SLOPE MOBILE (Direct 2026 Mirror) -->
-        <div class="card" onclick="openGame('https://3kh04ever.github.io')">
+        <div class="card" onclick="openGame('https://slope-online.github.io')">
             <h3>Slope Mobile</h3>
         </div>
-
-        <!-- RETRO BOWL (Stable Direct Mirror) -->
-        <div class="card" onclick="openGame('https://mountain-game-games.github.io')">
+        <div class="card" onclick="openGame('https://techarb2.github.io')">
             <h3>Retro Bowl</h3>
         </div>
-
-        <!-- SUBWAY SURFERS (New Direct Mirror) -->
-        <div class="card" onclick="openGame('https://3kh0.github.io')">
+        <div class="card" onclick="openGame('https://shashwatnigam99.github.io')">
             <h3>Subway Surfers</h3>
         </div>
-
-        <!-- BITLIFE (Direct Mirror) -->
-        <div class="card" onclick="openGame('https://bitlife-online.github.io/')">
+        <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')">
             <h3>BitLife</h3>
         </div>
     </div>
@@ -63,8 +56,33 @@
             document.getElementById('gameOverlay').style.display = 'none';
             document.getElementById('gameFrame').src = ''; 
         }
+        
+        function panic() {
+            window.location.replace("https://classroom.google.com");
+        }
+
+        // Desktop Panic (Escape Key)
         document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") { window.location.replace("https://classroom.google.com"); }
+            if (e.key === "Escape") { panic(); }
+        });
+
+        // Mobile Panic (Triple-Tap Detection)
+        let lastTap = 0;
+        let tapCount = 0;
+        document.addEventListener('touchend', function(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 300 && tapLength > 0) {
+                tapCount++;
+            } else {
+                tapCount = 1;
+            }
+            
+            if (tapCount >= 3) {
+                panic();
+            }
+            lastTap = currentTime;
         });
     </script>
 </body>
