@@ -5,92 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Google Drive - My Files</title>
     <style>
-        /* Modern Dark Theme */
-        body { background: #0f172a; color: white; font-family: -apple-system, sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
-        header { background: #1e293b; padding: 30px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        h1 { margin: 0; font-size: 24px; color: #38bdf8; }
-        
-        /* Game Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; padding: 30px; }
-        .card { background: #1e293b; border-radius: 15px; padding: 20px; cursor: pointer; transition: 0.3s; border: 2px solid #334155; }
-        .card:hover { transform: translateY(-5px); border-color: #38bdf8; background: #334155; }
-        .card h3 { margin: 10px 0 0 0; font-size: 16px; }
-
-        /* Full Screen Game Overlay */
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; margin: 0; }
+        header { background: #1e293b; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; padding: 20px; }
+        .card { background: #334155; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s; border: 1px solid #475569; }
+        .card:hover { transform: scale(1.05); background: #38bdf8; border-color: white; }
         #gameOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; }
         iframe { width: 100%; height: 100%; border: none; background: #000; }
-        
-        /* Controls */
-        .controls { position: absolute; top: 15px; left: 15px; z-index: 1001; display: flex; gap: 10px; }
-        .btn { padding: 12px 20px; border-radius: 8px; border: none; color: white; font-weight: bold; cursor: pointer; }
-        .close-btn { background: #ef4444; }
-        .panic-info { color: #94a3b8; font-size: 12px; margin-top: 10px; }
+        .close-btn { position: absolute; top: 10px; left: 10px; padding: 10px 15px; background: #ef4444; color: white; border-radius: 8px; cursor: pointer; z-index: 1001; border: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>BlooketPlayer99 Hub</h1>
-        <p class="panic-info">Press <b>ESC</b> or tap a game to start</p>
+        <p>Press <b>ESC</b> for Emergency Panic</p>
     </header>
 
     <div class="grid">
-        <!-- GAME 1: THE IMPOSSIBLE QUIZ (2026 Mirror) -->
-        <div class="card" onclick="openGame('https://theimpossiblequiz.info')">
-            <h3>Impossible Quiz</h3>
+        <!-- 1. RETRO BOWL (2026 Working Mirror) -->
+        <div class="card" onclick="openGame('https://math-maverick.github.io')">
+            <h3>Retro Bowl</h3>
+            <p>Football Simulator</p>
         </div>
 
-        <!-- GAME 2: 2048 (Official) -->
-        <div class="card" onclick="openGame('https://play2048.co')">
-            <h3>2048 Classic</h3>
+        <!-- 2. BITLIFE (Direct GitHub Mirror) -->
+        <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io/')">
+            <h3>BitLife</h3>
+            <p>Life Simulator</p>
         </div>
 
-        <!-- GAME 3: HEXTRIS (Direct) -->
-        <div class="card" onclick="openGame('https://hextris.io')">
-            <h3>Hextris</h3>
-        </div>
-
-        <!-- GAME 4: SPACE WAVES -->
-        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')">
+        <!-- 3. SPACE WAVES (Your favorite working link) -->
+        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io/')">
             <h3>Space Waves</h3>
+        </div>
+
+        <!-- 4. 2048 CLASSIC -->
+        <div class="card" onclick="openGame('https://git-2048.github.io/')">
+            <h3>2048</h3>
         </div>
     </div>
 
-    <!-- Game Player Window -->
     <div id="gameOverlay">
-        <div class="controls">
-            <button class="btn close-btn" onclick="closeGame()">CLOSE [X]</button>
-        </div>
-        <iframe id="gameFrame" src="" allowfullscreen></iframe>
+        <button class="close-btn" onclick="closeGame()">[X] CLOSE</button>
+        <iframe id="gameFrame" src="" allow="autoplay; fullscreen; keyboard" allowfullscreen></iframe>
     </div>
 
     <script>
         function openGame(url) {
-            const overlay = document.getElementById('gameOverlay');
-            const frame = document.getElementById('gameFrame');
-            
-            // Show overlay and load URL
-            overlay.style.display = 'block';
-            frame.src = url;
-            
-            // Prevent scrolling on the main page while playing
-            document.body.style.overflow = 'hidden';
+            document.getElementById('gameFrame').src = url;
+            document.getElementById('gameOverlay').style.display = 'block';
+            document.body.style.overflow = 'hidden'; 
         }
-
         function closeGame() {
-            const overlay = document.getElementById('gameOverlay');
-            const frame = document.getElementById('gameFrame');
-            
-            overlay.style.display = 'none';
-            frame.src = ''; // Stop the game music/code
-            document.body.style.overflow = 'auto';
+            document.getElementById('gameOverlay').style.display = 'none';
+            document.getElementById('gameFrame').src = ''; 
+            document.body.style.overflow = 'auto'; 
         }
-
-        // PANIC BUTTON: Redirects to Google Classroom
         document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") {
-                window.location.replace("https://classroom.google.com");
-            }
+            if (e.key === "Escape") { window.location.replace("https://classroom.google.com"); }
         });
     </script>
 </body>
