@@ -20,19 +20,18 @@
 
     <header onclick="panic()">
         <h1>BlooketPlayer99 Hub</h1>
-        <p>Tap a card to start. <b>Triple-tap</b> or <b>ESC</b> to Panic.</p>
+        <p>Tap a card to start. <b>Triple-tap</b> or <b>ESC</b> for IXL Panic.</p>
     </header>
 
     <div class="grid">
         <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
-        <!-- NEW: LOLBeans (Verified Mirror) -->
-        <div class="card" onclick="openGame('https://lol-beans.github.io')"><h3>LOL Beans</h3></div>
-        <!-- FIXED: Slope Mobile Mirror -->
-        <div class="card" onclick="openGame('https://slope-game.github.io')"><h3>Slope Mobile</h3></div>
-        <!-- FIXED: Retro Bowl (Vercel mirror for better loading) -->
-        <div class="card" onclick="openGame('https://retro-bowl-v2.vercel.app')"><h3>Retro Bowl</h3></div>
-        <!-- FIXED: Subway Surfers (High-reliability 3kh0 source) -->
-        <div class="card" onclick="openGame('https://3kh0-assets.github.io')"><h3>Subway Surfers</h3></div>
+        <!-- NEW: Moto X3M (Replaces Slope) -->
+        <div class="card" onclick="openGame('https://moto-x3m.github.io/')"><h3>Moto X3M</h3></div>
+        <!-- FIXED: Retro Bowl Stable Mirror -->
+        <div class="card" onclick="openGame('https://retrobowl.me')"><h3>Retro Bowl</h3></div>
+        <!-- FIXED: Subway Surfers Active Mirror -->
+        <div class="card" onclick="openGame('https://b8364.github.io')"><h3>Subway Surfers</h3></div>
+        <div class="card" onclick="openGame('https://lol-beans.github.io/')"><h3>LOL Beans</h3></div>
         <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
     </div>
 
@@ -46,7 +45,7 @@
             const frame = document.getElementById('gameFrame');
             frame.src = url;
             document.getElementById('gameOverlay').style.display = 'block';
-            setTimeout(() => { frame.focus(); }, 1000); 
+            setTimeout(() => { frame.focus(); }, 1200); 
         }
         
         function closeGame() {
@@ -67,16 +66,8 @@
         document.addEventListener('touchend', function(e) {
             const currentTime = new Date().getTime();
             const tapLength = currentTime - lastTap;
-            
-            if (tapLength < 600 && tapLength > 0) {
-                tapCount++;
-            } else {
-                tapCount = 1;
-            }
-            
-            if (tapCount >= 3) {
-                panic();
-            }
+            if (tapLength < 600 && tapLength > 0) { tapCount++; } else { tapCount = 1; }
+            if (tapCount >= 3) { panic(); }
             lastTap = currentTime;
         });
     </script>
