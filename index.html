@@ -25,13 +25,14 @@
 
     <div class="grid">
         <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
-        <!-- NEW: Moto X3M (Replaces Slope) -->
-        <div class="card" onclick="openGame('https://moto-x3m.github.io/')"><h3>Moto X3M</h3></div>
-        <!-- FIXED: Retro Bowl Stable Mirror -->
-        <div class="card" onclick="openGame('https://retrobowl.me')"><h3>Retro Bowl</h3></div>
-        <!-- FIXED: Subway Surfers Active Mirror -->
-        <div class="card" onclick="openGame('https://b8364.github.io')"><h3>Subway Surfers</h3></div>
-        <div class="card" onclick="openGame('https://lol-beans.github.io/')"><h3>LOL Beans</h3></div>
+        <!-- FIXED: Moto X3M (Mirror from Funkymods - currently active) -->
+        <div class="card" onclick="openGame('https://funkymods.github.io')"><h3>Moto X3M</h3></div>
+        <!-- FIXED: Retro Bowl (Neruvy Mirror - known for fewer black screens) -->
+        <div class="card" onclick="openGame('https://neruvy.github.io')"><h3>Retro Bowl</h3></div>
+        <!-- FIXED: Subway Surfers (RohanChacko WebGL version - very stable) -->
+        <div class="card" onclick="openGame('https://rohanchacko.github.io')"><h3>Subway Surfers</h3></div>
+        <!-- FIXED: LOL Beans (Direct Portal) -->
+        <div class="card" onclick="openGame('https://lolbeans.io/')"><h3>LOL Beans</h3></div>
         <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
     </div>
 
@@ -45,7 +46,8 @@
             const frame = document.getElementById('gameFrame');
             frame.src = url;
             document.getElementById('gameOverlay').style.display = 'block';
-            setTimeout(() => { frame.focus(); }, 1200); 
+            // Increased delay for Unity/WebGL assets to load before focusing
+            setTimeout(() => { frame.focus(); }, 1500); 
         }
         
         function closeGame() {
