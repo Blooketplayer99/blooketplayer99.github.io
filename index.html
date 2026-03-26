@@ -25,12 +25,14 @@
 
     <div class="grid">
         <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
+        <!-- NEW: LOLBeans (Verified Mirror) -->
+        <div class="card" onclick="openGame('https://lol-beans.github.io')"><h3>LOL Beans</h3></div>
         <!-- FIXED: Slope Mobile Mirror -->
-        <div class="card" onclick="openGame('https://finnbaltazar1111.github.io')"><h3>Slope Mobile</h3></div>
-        <!-- FIXED: Retro Bowl Mirror (Vercel-hosted version often bypasses GitHub blackscreens) -->
+        <div class="card" onclick="openGame('https://slope-game.github.io')"><h3>Slope Mobile</h3></div>
+        <!-- FIXED: Retro Bowl (Vercel mirror for better loading) -->
         <div class="card" onclick="openGame('https://retro-bowl-v2.vercel.app')"><h3>Retro Bowl</h3></div>
-        <!-- FIXED: Subway Surfers (New verified source) -->
-        <div class="card" onclick="openGame('https://atirek-ak.github.io')"><h3>Subway Surfers</h3></div>
+        <!-- FIXED: Subway Surfers (High-reliability 3kh0 source) -->
+        <div class="card" onclick="openGame('https://3kh0-assets.github.io')"><h3>Subway Surfers</h3></div>
         <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
     </div>
 
@@ -44,8 +46,7 @@
             const frame = document.getElementById('gameFrame');
             frame.src = url;
             document.getElementById('gameOverlay').style.display = 'block';
-            // Short delay ensures the iframe content is ready to accept focus
-            setTimeout(() => { frame.focus(); }, 800); 
+            setTimeout(() => { frame.focus(); }, 1000); 
         }
         
         function closeGame() {
