@@ -20,16 +20,19 @@
 
     <header onclick="panic()">
         <h1>BlooketPlayer99 Hub</h1>
-        <p>Tap a card to start. <b>Triple-tap</b> or <b>ESC</b> for Panic.</p>
+        <p>Tap to Play | <b>Triple-tap/ESC</b> for Panic</p>
     </header>
 
     <div class="grid">
-        <div class="card" onclick="openGame('https://motox3mpro.github.io/')"><h3>Moto X3M</h3></div>
-        <div class="card" onclick="openGame('https://3kh0-assets.github.io')"><h3>Retro Bowl</h3></div>
-        <div class="card" onclick="openGame('https://ubg76.github.io')"><h3>Subway Surfers</h3></div>
-        <div class="card" onclick="openGame('https://lolbeans.io')"><h3>LOL Beans</h3></div>
-        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
-        <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
+        <!-- BYPASS GAMES (These open in a new blank tab to fix white screens) -->
+        <div class="card" onclick="openGameBypass('https://motox3mpro.github.io/')"><h3>Moto X3M</h3></div>
+        <div class="card" onclick="openGameBypass('https://retrobowl.me')"><h3>Retro Bowl</h3></div>
+        <div class="card" onclick="openGameBypass('https://lolbeans.io/')"><h3>LOL Beans</h3></div>
+
+        <!-- OVERLAY GAMES (These work inside your site) -->
+        <div class="card" onclick="openGameOverlay('https://space-waves-unblocked.github.io/')"><h3>Space Waves</h3></div>
+        <div class="card" onclick="openGameOverlay('https://bitlifeunblockedonline.github.io/')"><h3>BitLife</h3></div>
+        <div class="card" onclick="openGameOverlay('https://raw.githack.com')"><h3>Subway Surfers</h3></div>
     </div>
 
     <div id="gameOverlay">
@@ -38,10 +41,11 @@
     </div>
 
     <script>
-        function openGame(url) {
-            // First, try opening in a 'cloaked' blank tab to prevent blackscreens
+        // Use this for games that show white/black screens in the overlay
+        function openGameBypass(url) {
             var win = window.open();
             if (win) {
+                win.document.title = "Google Docs";
                 win.document.body.style.margin = '0';
                 win.document.body.style.height = '100vh';
                 var iframe = win.document.createElement('iframe');
@@ -51,12 +55,15 @@
                 iframe.src = url;
                 win.document.body.appendChild(iframe);
             } else {
-                // Fallback to overlay if popups are blocked by your browser
-                const frame = document.getElementById('gameFrame');
-                frame.src = url;
-                document.getElementById('gameOverlay').style.display = 'block';
-                setTimeout(() => { frame.focus(); }, 1000);
+                openGameOverlay(url); // Fallback
             }
+        }
+
+        function openGameOverlay(url) {
+            const frame = document.getElementById('gameFrame');
+            frame.src = url;
+            document.getElementById('gameOverlay').style.display = 'block';
+            setTimeout(() => { frame.focus(); }, 1000);
         }
         
         function closeGame() {
