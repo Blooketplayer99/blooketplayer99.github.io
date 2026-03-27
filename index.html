@@ -20,54 +20,32 @@
 
     <header onclick="panic()">
         <h1>BlooketPlayer99 Hub</h1>
-        <p>Tap a card | <b>Triple-tap</b> or <b>ESC</b> for Panic.</p>
+        <p>Tap a card to start. <b>Triple-tap</b> or <b>ESC</b> for IXL Panic.</p>
     </header>
 
     <div class="grid">
-        <!-- BYPASS MODE -->
-        <div class="card" onclick="openGameBypass('https://motox3mpro.github.io')"><h3>Moto X3M</h3></div>
-        
-        <!-- FIXED OVERLAY GAMES -->
-        <div class="card" onclick="openGameOverlay('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
-        <div class="card" onclick="openGameOverlay('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
-        <div class="card" onclick="openGameOverlay('https://webglmath.github.io')"><h3>Subway Surfers</h3></div>
-        <div class="card" onclick="openGameOverlay('https://webglmath.github.io')"><h3>Retro Bowl</h3></div>
-        <!-- NEW REPLACEMENT FOR LOL BEANS (MOBILE FRIENDLY) -->
-        <div class="card" onclick="openGameOverlay('https://webglmath.github.io')"><h3>Drive Mad</h3></div>
+        <!-- YOUR WORKING ORIGINALS -->
+        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
+        <div class="card" onclick="openGame('https://funkymods.github.io')"><h3>Moto X3M</h3></div>
+        <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
+
+        <!-- NEW WORKING 2026 MIRRORS -->
+        <div class="card" onclick="openGame('https://eggycar-2.github.io/drive-mad-2')"><h3>Drive Mad</h3></div>
+        <div class="card" onclick="openGame('https://techarb2.github.io')"><h3>Retro Bowl</h3></div>
+        <div class="card" onclick="openGame('https://3kh0-assets.github.io')"><h3>Subway Surfers</h3></div>
     </div>
 
     <div id="gameOverlay">
         <button class="close-btn" onclick="closeGame()">[X] CLOSE</button>
-        <iframe id="gameFrame" src="" 
-            allow="autoplay; fullscreen; keyboard; touch; webgl; gamepad" 
-            sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
-            allowfullscreen>
-        </iframe>
+        <iframe id="gameFrame" src="" allow="autoplay; fullscreen; keyboard; touch" allowfullscreen></iframe>
     </div>
 
     <script>
-        function openGameBypass(url) {
-            var win = window.open();
-            if (win) {
-                win.document.title = "Google Docs";
-                win.document.body.style.margin = '0';
-                win.document.body.style.height = '100vh';
-                var iframe = win.document.createElement('iframe');
-                iframe.style.border = 'none';
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                iframe.src = url;
-                win.document.body.appendChild(iframe);
-            } else {
-                openGameOverlay(url);
-            }
-        }
-
-        function openGameOverlay(url) {
+        function openGame(url) {
             const frame = document.getElementById('gameFrame');
             frame.src = url;
             document.getElementById('gameOverlay').style.display = 'block';
-            setTimeout(() => { frame.focus(); }, 1200);
+            setTimeout(() => { frame.focus(); }, 1500); 
         }
         
         function closeGame() {
