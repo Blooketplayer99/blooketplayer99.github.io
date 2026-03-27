@@ -14,40 +14,63 @@
         #gameOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; }
         iframe { width: 100%; height: 100%; border: none; background: #000; }
         .close-btn { position: absolute; top: 10px; left: 10px; padding: 12px 18px; background: #ef4444; color: white; border-radius: 8px; cursor: pointer; z-index: 1001; border: none; font-weight: bold; font-size: 14px; }
+        .bypass-hint { font-size: 10px; color: #94a3b8; margin-top: 5px; }
     </style>
 </head>
 <body>
 
     <header onclick="panic()">
         <h1>BlooketPlayer99 Hub</h1>
-        <p>Tap a card to start. <b>Triple-tap</b> or <b>ESC</b> for IXL Panic.</p>
+        <p>Tap to Play | <b>Triple-tap/ESC</b> for Panic</p>
     </header>
 
     <div class="grid">
-        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
-        <!-- FIXED: Moto X3M (Mirror from Funkymods - currently active) -->
-        <div class="card" onclick="openGame('https://funkymods.github.io')"><h3>Moto X3M</h3></div>
-        <!-- FIXED: Retro Bowl (Neruvy Mirror - known for fewer black screens) -->
-        <div class="card" onclick="openGame('https://neruvy.github.io')"><h3>Retro Bowl</h3></div>
-        <!-- FIXED: Subway Surfers (RohanChacko WebGL version - very stable) -->
-        <div class="card" onclick="openGame('https://rohanchacko.github.io')"><h3>Subway Surfers</h3></div>
-        <!-- FIXED: LOL Beans (Direct Portal) -->
-        <div class="card" onclick="openGame('https://lolbeans.io/')"><h3>LOL Beans</h3></div>
-        <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
+        <div class="card" onclick="openGame('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3><p class="bypass-hint">WebGL Optimized</p></div>
+        <div class="card" onclick="openGame('https://bigfoot67.github.io')"><h3>Moto X3M</h3><p class="bypass-hint">Alternative Mirror</p></div>
+        <div class="card" onclick="openGame('https://neruvy.github.io')"><h3>Retro Bowl</h3><p class="bypass-hint">Neruvy Fix</p></div>
+        <div class="card" onclick="openGame('https://rohanchacko.github.io')"><h3>Subway Surfers</h3><p class="bypass-hint">WebGL Stable</p></div>
+        <div class="card" onclick="openGame('https://lolbeans.io')"><h3>LOL Beans</h3><p class="bypass-hint">Multiplayer</p></div>
+        <div class="card" onclick="openGame('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3><p class="bypass-hint">Text Based</p></div>
     </div>
 
+    <!-- This overlay has fixed sandbox permissions to stop blackscreens -->
     <div id="gameOverlay">
         <button class="close-btn" onclick="closeGame()">[X] CLOSE</button>
-        <iframe id="gameFrame" src="" allow="autoplay; fullscreen; keyboard; touch" allowfullscreen></iframe>
+        <iframe id="gameFrame" src="" 
+            allow="autoplay; fullscreen; keyboard-focus; gamepad; webgl; accelerometer; gyroscope" 
+            sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
+            allowfullscreen>
+        </iframe>
     </div>
 
     <script>
+        // Try to open in a blank tab first to bypass filters, if blocked, use overlay
         function openGame(url) {
-            const frame = document.getElementById('gameFrame');
-            frame.src = url;
-            document.getElementById('gameOverlay').style.display = 'block';
-            // Increased delay for Unity/WebGL assets to load before focusing
-            setTimeout(() => { frame.focus(); }, 1500); 
+            try {
+                const win = window.open('about:blank', '_blank');
+                if (!win || win.closed) {
+                    // Fallback to overlay if popup is blocked
+                    const frame = document.getElementById('gameFrame');
+                    frame.src = url;
+                    document.getElementById('gameOverlay').style.display = 'block';
+                    setTimeout(() => { frame.focus(); }, 1000);
+                } else {
+                    // Injecting the game into a clean, untraceable blank tab
+                    win.document.title = "Google Docs";
+                    win.document.body.style.margin = '0';
+                    win.document.body.style.height = '100vh';
+                    win.document.body.style.overflow = 'hidden';
+                    const iframe = win.document.createElement('iframe');
+                    iframe.style.border = 'none';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.src = url;
+                    iframe.allow = "autoplay; fullscreen; keyboard-focus; gamepad; webgl";
+                    win.document.body.appendChild(iframe);
+                }
+            } catch (e) {
+                console.log("Popup blocked, using overlay.");
+            }
         }
         
         function closeGame() {
