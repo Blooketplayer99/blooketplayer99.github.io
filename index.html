@@ -20,25 +20,26 @@
 
     <header onclick="panic()">
         <h1>BlooketPlayer99 Hub</h1>
-        <p>Tap to Play | <b>Triple-tap/ESC</b> for Panic</p>
+        <p>Tap a card | <b>Triple-tap</b> or <b>ESC</b> for Panic.</p>
     </header>
 
     <div class="grid">
-        <!-- BYPASS MODE (AS REQUESTED) -->
+        <!-- BYPASS MODE -->
         <div class="card" onclick="openGameBypass('https://motox3mpro.github.io')"><h3>Moto X3M</h3></div>
         
-        <!-- FIXED OVERLAY GAMES WITH NEW 2026 MIRRORS -->
+        <!-- FIXED OVERLAY GAMES -->
         <div class="card" onclick="openGameOverlay('https://space-waves-unblocked.github.io')"><h3>Space Waves</h3></div>
         <div class="card" onclick="openGameOverlay('https://bitlifeunblockedonline.github.io')"><h3>BitLife</h3></div>
-        <div class="card" onclick="openGameOverlay('https://3kh0-assets.github.io')"><h3>Subway Surfers</h3></div>
-        <div class="card" onclick="openGameOverlay('https://3kh0-assets.github.io')"><h3>Retro Bowl</h3></div>
-        <div class="card" onclick="openGameOverlay('https://coolubg.github.io')"><h3>LOL Beans</h3></div>
+        <div class="card" onclick="openGameOverlay('https://webglmath.github.io')"><h3>Subway Surfers</h3></div>
+        <div class="card" onclick="openGameOverlay('https://webglmath.github.io')"><h3>Retro Bowl</h3></div>
+        <!-- NEW REPLACEMENT FOR LOL BEANS (MOBILE FRIENDLY) -->
+        <div class="card" onclick="openGameOverlay('https://webglmath.github.io')"><h3>Drive Mad</h3></div>
     </div>
 
     <div id="gameOverlay">
         <button class="close-btn" onclick="closeGame()">[X] CLOSE</button>
         <iframe id="gameFrame" src="" 
-            allow="autoplay; fullscreen; keyboard; touch; webgl" 
+            allow="autoplay; fullscreen; keyboard; touch; webgl; gamepad" 
             sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
             allowfullscreen>
         </iframe>
