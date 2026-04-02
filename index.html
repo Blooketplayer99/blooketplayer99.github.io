@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlooketPlayer99 Hub</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header { text-align: center; padding: 40px 20px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .instructions { color: #94a3b8; font-size: 0.9rem; }
+
+        .card-container {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: #1e293b;
+            border-radius: 12px;
+            width: 160px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: #334155;
+            border-color: #64748b;
+        }
+
+        .card-title { font-weight: bold; font-size: 1.1rem; text-align: center; }
+
+        /* Game Overlay Styles */
+        #game-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+        }
+
+        #game-frame {
+            width: 80%; height: 80%;
+            margin: 5% auto;
+            display: block;
+            border: none;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px; right: 30px;
+            font-size: 30px; color: white;
+            cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BlooketPlayer99 Hub</h1>
+        <p class="instructions">Tap a card to start. <strong>Triple-tap</strong> or <strong>ESC</strong> for IXL Panic.</p>
+    </header>
+
+    <div class="card-container">
+        <!-- Replace the URLs below with the actual game links you find -->
+        <div class="card" onclick="playGame('https://example.com')">
+            <div class="card-title">Space Waves</div>
+        </div>
+        <div class="card" onclick="playGame('https://example.com')">
+            <div class="card-title">Moto X3M</div>
+        </div>
+        <div class="card" onclick="playGame('https://example.com')">
+            <div class="card-title">BitLife</div>
+        </div>
+        <div class="card" onclick="playGame('https://example.com')">
+            <div class="card-title">Drive Mad</div>
+        </div>
+        <div class="card" onclick="playGame('https://example.com')">
+            <div class="card-title">Retro Bowl</div>
+        </div>
+    </div>
+
+    <!-- The Game Player -->
+    <div id="game-overlay">
+        <span class="close-btn" onclick="closeGame()">&times; Close</span>
+        <iframe id="game-frame" src=""></iframe>
+    </div>
+
+    <script>
+        function playGame(url) {
+            document.getElementById('game-frame').src = url;
+            document.getElementById('game-overlay').style.display = 'block';
+        }
+
+        function closeGame() {
+            document.getElementById('game-overlay').style.display = 'none';
+            document.getElementById('game-frame').src = '';
+        }
+
+        // IXL Panic Button (ESC Key)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                window.location.href = "https://ixl.com";
+            }
+        });
+    </script>
+</body>
+</html>
 
