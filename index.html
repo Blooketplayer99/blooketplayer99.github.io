@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlooketPlayer99 | Unblocked</title>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: white; text-align: center; margin: 0; }
+        nav { background: #1f1f1f; padding: 1rem; font-size: 1.5rem; font-weight: bold; color: #00ff88; }
+        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 40px; }
+        .game-card { background: #252525; border-radius: 10px; padding: 15px; transition: 0.3s; cursor: pointer; border: 2px solid transparent; }
+        .game-card:hover { transform: translateY(-5px); border-color: #00ff88; }
+        .game-card img { width: 100%; border-radius: 5px; height: 120px; object-fit: cover; }
+        h3 { margin: 10px 0 0; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+<nav>BLOOKETPLAYER99 GAMES</nav>
+
+<div class="container" id="game-container">
+    <!-- Games will be injected here by JavaScript -->
+</div>
+
+<script>
+    // Example Game List
+    const games = [
+        { title: "Slope", img: "https://placeholder.com", url: "https://kdata1.com" },
+        { title: "Retro Bowl", img: "https://placeholder.com", url: "https://konggames.com" },
+        { title: "Minecraft Classic", img: "https://placeholder.com", url: "https://minecraft.net" }
+    ];
+
+    const container = document.getElementById('game-container');
+
+    games.forEach(game => {
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.innerHTML = `
+            <img src="${game.img}" alt="${game.title}">
+            <h3>${game.title}</h3>
+        `;
+        card.onclick = () => {
+            // This opens the game in a new clean window to bypass some filters
+            window.open(game.url, '_blank', 'width=800,height=600');
+        };
+        container.appendChild(card);
+    });
+</script>
+
+</body>
+</html>
