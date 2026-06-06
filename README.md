@@ -1,2 +1,3 @@
 # blooketplayer99.github.io
-Attempt at making an unblocked hub for foodstars.io
+ Unblocked hub for foodstars.io
+ More games may come in the future if I can get foodstars to work 
