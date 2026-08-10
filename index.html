@@ -1,13 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Project</title>
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #000; }
-        iframe { width: 100%; height: 100%; border: none; }
-    </style>
+  <meta charset="utf-8" />
+  <title>Game Hub</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg:#000;
+      --panel:#0b0b0b;
+      --muted:#888;
+      --accent:#09f;
+      --card:#111;
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    .app{display:flex;height:100vh;overflow:hidden}
+    .sidebar{
+      width:320px;
+      min-width:220px;
+      background:linear-gradient(180deg,var(--panel),#050505);
+      border-right:1px solid rgba(255,255,255,0.03);
+      box-sizing:border-box;
+      padding:16px;
+      overflow:auto;
+    }
+    .brand{font-size:1.1rem;font-weight:600;margin-bottom:8px}
+    .desc{color:var(--muted);font-size:0.9rem;margin-bottom:12px}
+    .game-list{display:grid;grid-template-columns:1fr;gap:8px}
+    .game-card{
+      background:var(--card);border:1px solid rgba(255,255,255,0.03);padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;
+      transition:transform .08s,box-shadow .08s;
+    }
+    .game-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+    .game-title{font-weight:600}
+    .game-sub{font-size:0.85rem;color:var(--muted)}
+    .main{flex:1;display:flex;flex-direction:column}
+    .toolbar{display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-bottom:1px solid rgba(255,255,255,0.02)}
+    .title{font-weight:600}
+    .controls{margin-left:auto;display:flex;gap:8px}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:0.9rem}
+    .btn.primary{background:var(--accent);border-color:transparent;color:#000}
+    iframe{flex:1;border:none;width:100%;height:100%;background:#000;}
+    .note{padding:10px;color:var(--muted);font-size:0.9rem}
+    @media (max-width:820px){
+      .app{flex-direction:column}
+      .sidebar{width:100%;height:auto;min-width:0;display:block;order:2}
+      .main{order:1;height:60vh}
+    }
+  </style>
 </head>
 <body>
-    <iframe src="https://github.io"></iframe>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">My Game Hub</div>
+      <div class="desc">Click a game to load it in the player. If a game can't be embedded, use "Open in new tab".</div>
+
+      <div class="game-list" id="gameList"></div>
+
+      <div style="margin-top:12px" class="note">
+        Quick add: in the script below, add an object to the "games" array with {id, name, src, hostHint}.
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="toolbar">
+        <div class="title" id="currentTitle">Select a game</div>
+        <div class="controls">
+          <button class="btn" id="openTabBtn" disabled>Open in new tab</button>
+          <button class="btn primary" id="homeBtn">Home</button>
+        </div>
+      </div>
+
+      <iframe id="player" sandbox="allow-scripts allow-forms allow-same-origin allow-popups"></iframe>
+
+      <div id="status" class="note" style="display:none"></div>
+    </main>
+  </div>
+
+  <script>
+    // Games list: add games here.
+    // Note: many sites (commercial games) block embedding with X-Frame-Options or CSP.
+    // If a game is not embeddable, the "Open in new tab" button will let users open it directly.
+    const games = [
+      // Example: a public, embeddable HTML5 game (works as an example)
+      { id: '2048', name: '2048', src: 'https://gabrielecirulli.github.io/2048/', hostHint: 'gabrielecirulli.github.io' },
+
+      // Placeholders: add BitLife / Space Waves here — many commercial titles block embedding.
+      // Replace the src with an embeddable URL, or keep it as a link to open externally.
+      { id: 'bitlife', name: 'BitLife (open externally)', src: 'https://bitlifeapp.com/', hostHint: 'bitlifeapp.com' },
+      { id: 'space-waves', name: 'Space Waves (example)', src: 'https://example.com/space-waves/', hostHint: 'example.com' },
+    ];
+
+    const gameList = document.getElementById('gameList');
+    const player = document.getElementById('player');
+    const currentTitle = document.getElementById('currentTitle');
+    const openTabBtn = document.getElementById('openTabBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const status = document.getElementById('status');
+
+    // Build the UI list
+    function buildList(){
+      gameList.innerHTML = '';
+      for(const g of games){
+        const el = document.createElement('div');
+        el.className = 'game-card';
+        el.dataset.id = g.id;
+        el.innerHTML = `<div style="flex:1">
+                        <div class="game-title">${g.name}</div>
+                        <div class="game-sub">${g.hostHint || new URL(g.src).host}</div>
+                      </div>
+                      <div style="font-size:0.9rem;color:var(--muted)">Play</div>`;
+        el.addEventListener('click', ()=> selectGame(g));
+        gameList.appendChild(el);
+      }
+    }
+
+    // Select and load a game
+    let currentGame = null;
+    function selectGame(g){
+      currentGame = g;
+      currentTitle.textContent = g.name;
+      openTabBtn.disabled = false;
+      openTabBtn.onclick = ()=> window.open(g.src, '_blank', 'noopener');
+      status.style.display = 'none';
+      // Set iframe src. This may fail to display if the target blocks embedding.
+      player.src = g.src;
+      // Small heuristic: show a short helper message (can't detect embed-block reliably due to cross-origin restrictions)
+      setTimeout(()=> {
+        // If the page inside the iframe is same-origin then we could inspect; since many are cross-origin,
+        // we can't detect blocks reliably. Provide a visible hint instead.
+        status.style.display = 'block';
+        status.textContent = 'If the game does not appear, the site may block embedding. Use "Open in new tab".';
+      }, 900);
+    }
+
+    // Home button clears the iframe
+    homeBtn.addEventListener('click', ()=> {
+      currentGame = null;
+      player.src = 'about:blank';
+      currentTitle.textContent = 'Select a game';
+      openTabBtn.disabled = true;
+      status.style.display = 'none';
+    });
+
+    // Init
+    buildList();
+    // Optionally load the first game automatically:
+    // selectGame(games[0]);
+
+    // How to add your own game:
+    // 1) Find a direct URL to the game HTML page (must be embeddable).
+    // 2) Add a new item to the games array above:
+    //    { id: 'your-id', name: 'The Game', src: 'https://site.com/game-page', hostHint: 'site.com' }
+    // 3) Save and reload this page.
+  </script>
 </body>
 </html>
