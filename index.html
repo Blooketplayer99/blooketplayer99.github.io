@@ -5,138 +5,75 @@
   <title>Game Hub</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    :root{
-      --bg:#000;
-      --panel:#0b0b0b;
-      --muted:#888;
-      --accent:#09f;
-      --card:#111;
-    }
+    :root{--bg:#000;--panel:#0b0b0b;--muted:#888;--accent:#09f;--card:#111;--danger:#ff6b6b}
     html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
     .app{display:flex;height:100vh;overflow:hidden}
-    .sidebar{
-      width:320px;
-      min-width:220px;
-      background:linear-gradient(180deg,var(--panel),#050505);
-      border-right:1px solid rgba(255,255,255,0.03);
-      box-sizing:border-box;
-      padding:16px;
-      overflow:auto;
-    }
-    .brand{font-size:1.1rem;font-weight:600;margin-bottom:8px}
-    .desc{color:var(--muted);font-size:0.9rem;margin-bottom:12px}
-    .game-list{display:grid;grid-template-columns:1fr;gap:8px}
-    .game-card{
-      background:var(--card);border:1px solid rgba(255,255,255,0.03);padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;
-      transition:transform .08s,box-shadow .08s;
-    }
-    .game-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-    .game-title{font-weight:600}
-    .game-sub{font-size:0.85rem;color:var(--muted)}
-    .main{flex:1;display:flex;flex-direction:column}
-    .toolbar{display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-bottom:1px solid rgba(255,255,255,0.02)}
-    .title{font-weight:600}
-    .controls{margin-left:auto;display:flex;gap:8px}
-    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:0.9rem}
-    .btn.primary{background:var(--accent);border-color:transparent;color:#000}
-    iframe{flex:1;border:none;width:100%;height:100%;background:#000;}
-    .note{padding:10px;color:var(--muted);font-size:0.9rem}
-    @media (max-width:820px){
-      .app{flex-direction:column}
-      .sidebar{width:100%;height:auto;min-width:0;display:block;order:2}
-      .main{order:1;height:60vh}
-    }
+    .sidebar{width:320px;min-width:220px;background:linear-gradient(180deg,var(--panel),#050505);border-right:1px solid rgba(255,255,255,.03);box-sizing:border-box;padding:16px;overflow:auto}
+    .brand{font-size:1.1rem;font-weight:600;margin-bottom:8px}.desc{color:var(--muted);font-size:.9rem;margin-bottom:12px}
+    .game-list{display:grid;grid-template-columns:1fr;gap:8px}.game-card{background:var(--card);border:1px solid rgba(255,255,255,.03);padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:transform .08s,box-shadow .08s}.game-card:hover,.game-card.active{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.6);border-color:var(--accent)}
+    .game-title{font-weight:600}.game-sub{font-size:.85rem;color:var(--muted)}.main{flex:1;display:flex;flex-direction:column;min-width:0}.toolbar{display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);border-bottom:1px solid rgba(255,255,255,.02)}.title{font-weight:600}.controls{margin-left:auto;display:flex;gap:8px}.btn{background:transparent;border:1px solid rgba(255,255,255,.12);color:#fff;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:.9rem}.btn.primary{background:var(--accent);border-color:transparent;color:#000}.btn:disabled{opacity:.5;cursor:wait}
+    .player-wrap{position:relative;flex:1;min-height:0;background:#000}iframe{display:block;border:0;width:100%;height:100%;background:#000}.loading,.error{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;box-sizing:border-box;background:#050505;color:var(--muted)}.error{z-index:2}.error strong{display:block;color:#fff;margin-bottom:8px}.error a{display:inline-block;margin-top:16px;text-decoration:none}.note{padding:10px;color:var(--muted);font-size:.9rem}
+    @media (max-width:820px){.app{flex-direction:column}.sidebar{width:100%;height:auto;min-width:0;display:block;order:2}.main{order:1;height:60vh}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
       <div class="brand">Unblocked Game Hub</div>
-      <div class="desc">Click a game to play it directly on this site. All games load instantly!</div>
-
+      <div class="desc">Choose a game to play. Games that do not allow embedding can still be opened in a new tab.</div>
       <div class="game-list" id="gameList"></div>
-
-      <div style="margin-top:12px" class="note">
-        All games are fully playable without leaving the site.
-      </div>
+      <div style="margin-top:12px" class="note">Some third-party sites block iframe embedding. That cannot be bypassed by this page.</div>
     </aside>
-
     <main class="main">
-      <div class="toolbar">
-        <div class="title" id="currentTitle">Select a game to start</div>
-        <div class="controls">
-          <button class="btn primary" id="homeBtn">Home</button>
-        </div>
+      <div class="toolbar"><div class="title" id="currentTitle">Select a game to start</div><div class="controls"><button class="btn primary" id="openBtn" type="button" disabled>Open game</button><button class="btn" id="homeBtn" type="button">Home</button></div></div>
+      <div class="player-wrap">
+        <div class="loading" id="loading" hidden>Loading game…</div>
+        <div class="error" id="error" hidden></div>
+        <iframe id="player" title="Game player" allow="fullscreen; autoplay; gamepad" referrerpolicy="no-referrer" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-pointer-lock allow-modals"></iframe>
       </div>
-
-      <iframe id="player" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-pointer-lock"></iframe>
-
-      <div id="status" class="note" style="display:none"></div>
     </main>
   </div>
-
   <script>
-    // Games list: all games are fully embeddable and playable on this site
     const games = [
-      { id: '2048', name: '2048', src: 'https://gabrielecirulli.github.io/2048/', hostHint: 'Slide tiles to reach 2048' },
-      { id: 'flappybird', name: 'Flappy Bird', src: 'https://playcanvas.com/project/440468/editor', hostHint: 'Tap to flap and avoid pipes' },
-      { id: 'snake', name: 'Snake Game', src: 'https://seancode.com/snake/', hostHint: 'Classic snake arcade game' },
-      { id: 'pacman', name: 'Pac-Man', src: 'https://pacman.cc/', hostHint: 'Eat pellets and avoid ghosts' },
-      { id: 'minesweeper', name: 'Minesweeper', src: 'https://minesweeper.online/', hostHint: 'Find all hidden mines' },
-      { id: 'checkers', name: 'Checkers', src: 'https://www.gamesforthebrain.com/game/checkers/', hostHint: 'Jump your opponent' },
-      { id: 'connect4', name: 'Connect Four', src: 'https://www.gamesforthebrain.com/game/connect4/', hostHint: 'Get four in a row' },
-      { id: 'tictactoe', name: 'Tic-Tac-Toe', src: 'https://playtictactoe.org/', hostHint: 'Classic strategy game' },
-      { id: 'breakout', name: 'Breakout', src: 'https://playcanvas.com/project/375828/editor', hostHint: 'Break all the bricks' },
-      { id: 'doodle', name: 'Doodle Jump', src: 'https://www.playcanvas.com/project/375811/editor', hostHint: 'Jump higher and higher' },
-      { id: 'asteroids', name: 'Asteroids', src: 'https://playcanvas.com/project/375810/editor', hostHint: 'Shoot all asteroids' },
-      { id: 'pong', name: 'Pong', src: 'https://playcanvas.com/project/375809/editor', hostHint: 'Classic arcade paddle game' },
-      { id: 'spaceships', name: 'Space Shooter', src: 'https://playcanvas.com/project/426236/editor', hostHint: 'Survive the asteroid field' },
-      { id: 'spacewaves', name: 'Space Waves', src: 'https://nite.games/play/space-waves', hostHint: 'Survive wave after wave of enemies' },
-      { id: 'bitlife', name: 'BitLife', src: 'https://html5gamearchive.github.io/gfiles/games/bitlife/index.html', hostHint: 'Live a life simulation and make big choices' },
-      { id: 'chess', name: 'Chess', src: 'https://lichess.org/embed', hostHint: 'Play chess online' },
+      {id:'2048',name:'2048',src:'https://gabrielecirulli.github.io/2048/',hostHint:'Slide tiles to reach 2048'},
+      {id:'flappybird',name:'Flappy Bird',src:'https://playcanv.as/p/440468/',hostHint:'Tap to flap and avoid pipes'},
+      {id:'snake',name:'Snake Game',src:'https://seancode.com/snake/',hostHint:'Classic snake arcade game'},
+      {id:'pacman',name:'Pac-Man',src:'https://pacman.cc/',hostHint:'Eat pellets and avoid ghosts'},
+      {id:'minesweeper',name:'Minesweeper',src:'https://minesweeper.online/',hostHint:'Find all hidden mines'},
+      {id:'checkers',name:'Checkers',src:'https://www.gamesforthebrain.com/game/checkers/',hostHint:'Jump your opponent'},
+      {id:'connect4',name:'Connect Four',src:'https://www.gamesforthebrain.com/game/connect4/',hostHint:'Get four in a row'},
+      {id:'tictactoe',name:'Tic-Tac-Toe',src:'https://playtictactoe.org/',hostHint:'Classic strategy game'},
+      {id:'breakout',name:'Breakout',src:'https://playcanv.as/p/375828/',hostHint:'Break all the bricks'},
+      {id:'doodle',name:'Doodle Jump',src:'https://playcanv.as/p/375811/',hostHint:'Jump higher and higher'},
+      {id:'asteroids',name:'Asteroids',src:'https://playcanv.as/p/375810/',hostHint:'Shoot all asteroids'},
+      {id:'pong',name:'Pong',src:'https://playcanv.as/p/375809/',hostHint:'Classic arcade paddle game'},
+      {id:'spaceships',name:'Space Shooter',src:'https://playcanv.as/p/426236/',hostHint:'Survive the asteroid field'},
+      {id:'spacewaves',name:'Space Waves',src:'https://nite.games/play/space-waves',hostHint:'Survive wave after wave of enemies'},
+      {id:'bitlife',name:'BitLife',src:'https://html5gamearchive.github.io/gfiles/games/bitlife/index.html',hostHint:'Live a life simulation and make big choices'},
+      {id:'chess',name:'Chess',src:'https://lichess.org/embed',hostHint:'Play chess online'}
     ];
 
-    const gameList = document.getElementById('gameList');
-    const player = document.getElementById('player');
-    const currentTitle = document.getElementById('currentTitle');
-    const homeBtn = document.getElementById('homeBtn');
-    const status = document.getElementById('status');
+    const gameList=document.getElementById('gameList'), player=document.getElementById('player'), currentTitle=document.getElementById('currentTitle'), homeBtn=document.getElementById('homeBtn'), openBtn=document.getElementById('openBtn'), loading=document.getElementById('loading'), error=document.getElementById('error');
+    let currentGame=null, loadTimer=null;
 
-    // Build the UI list
     function buildList(){
-      gameList.innerHTML = '';
-      for(const g of games){
-        const el = document.createElement('div');
-        el.className = 'game-card';
-        el.dataset.id = g.id;
-        el.innerHTML = `<div style="flex:1">
-                        <div class="game-title">${g.name}</div>
-                        <div class="game-sub">${g.hostHint}</div>
-                      </div>
-                      <div style="font-size:0.9rem;color:var(--muted)">▶</div>`;
-        el.addEventListener('click', ()=> selectGame(g));
-        gameList.appendChild(el);
-      }
+      gameList.replaceChildren();
+      games.forEach(g=>{
+        const el=document.createElement('button'); el.type='button'; el.className='game-card'; el.dataset.id=g.id;
+        el.innerHTML=`<span style="flex:1;text-align:left"><span class="game-title">${g.name}</span><br><span class="game-sub">${g.hostHint}</span></span><span aria-hidden="true">▶</span>`;
+        el.addEventListener('click',()=>selectGame(g,el)); gameList.appendChild(el);
+      });
     }
-
-    // Select and load a game
-    let currentGame = null;
-    function selectGame(g){
-      currentGame = g;
-      currentTitle.textContent = g.name;
-      status.style.display = 'none';
-      player.src = g.src;
+    function showError(message){error.innerHTML=`<div><strong>${message}</strong><div>This site may block iframe embedding, or the game URL may no longer exist.</div><a class="btn primary" href="${currentGame.src}" target="_blank" rel="noopener">Open in a new tab</a></div>`; error.hidden=false;}
+    function selectGame(g,el){
+      currentGame=g; currentTitle.textContent=g.name; openBtn.disabled=false; openBtn.onclick=()=>window.open(g.src,'_blank','noopener');
+      document.querySelectorAll('.game-card').forEach(card=>card.classList.toggle('active',card===el)); error.hidden=true; loading.hidden=false; clearTimeout(loadTimer);
+      // Clear the old document first so a failed game can never remain visible.
+      player.src='about:blank';
+      requestAnimationFrame(()=>{ if(currentGame!==g)return; player.src=g.src; loadTimer=setTimeout(()=>{loading.hidden=true;showError('The game did not load inside this page.');},8000); });
     }
-
-    // Home button clears the iframe
-    homeBtn.addEventListener('click', ()=> {
-      currentGame = null;
-      player.src = 'about:blank';
-      currentTitle.textContent = 'Select a game to start';
-      status.style.display = 'none';
-    });
-
-    // Init
+    player.addEventListener('load',()=>{clearTimeout(loadTimer);loading.hidden=true;});
+    homeBtn.addEventListener('click',()=>{clearTimeout(loadTimer);currentGame=null;player.src='about:blank';currentTitle.textContent='Select a game to start';openBtn.disabled=true;loading.hidden=true;error.hidden=true;document.querySelectorAll('.game-card').forEach(card=>card.classList.remove('active'));});
     buildList();
   </script>
 </body>
