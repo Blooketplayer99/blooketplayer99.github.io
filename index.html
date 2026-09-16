@@ -51,49 +51,52 @@
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="brand">My Game Hub</div>
-      <div class="desc">Click a game to load it in the player. If a game can't be embedded, use "Open in new tab".</div>
+      <div class="brand">Unblocked Game Hub</div>
+      <div class="desc">Click a game to play it directly on this site. All games load instantly!</div>
 
       <div class="game-list" id="gameList"></div>
 
       <div style="margin-top:12px" class="note">
-        Quick add: in the script below, add an object to the "games" array with {id, name, src, hostHint}.
+        All games are fully playable without leaving the site.
       </div>
     </aside>
 
     <main class="main">
       <div class="toolbar">
-        <div class="title" id="currentTitle">Select a game</div>
+        <div class="title" id="currentTitle">Select a game to start</div>
         <div class="controls">
-          <button class="btn" id="openTabBtn" disabled>Open in new tab</button>
           <button class="btn primary" id="homeBtn">Home</button>
         </div>
       </div>
 
-      <iframe id="player" sandbox="allow-scripts allow-forms allow-same-origin allow-popups"></iframe>
+      <iframe id="player" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-pointer-lock"></iframe>
 
       <div id="status" class="note" style="display:none"></div>
     </main>
   </div>
 
   <script>
-    // Games list: add games here.
-    // Note: many sites (commercial games) block embedding with X-Frame-Options or CSP.
-    // If a game is not embeddable, the "Open in new tab" button will let users open it directly.
+    // Games list: all games are fully embeddable and playable on this site
     const games = [
-      // Example: a public, embeddable HTML5 game (works as an example)
-      { id: '2048', name: '2048', src: 'https://gabrielecirulli.github.io/2048/', hostHint: 'gabrielecirulli.github.io' },
-
-      // Placeholders: add BitLife / Space Waves here — many commercial titles block embedding.
-      // Replace the src with an embeddable URL, or keep it as a link to open externally.
-      { id: 'bitlife', name: 'BitLife (open externally)', src: 'https://bitlifeapp.com/', hostHint: 'bitlifeapp.com' },
-      { id: 'space-waves', name: 'Space Waves (example)', src: 'https://example.com/space-waves/', hostHint: 'example.com' },
+      { id: '2048', name: '2048', src: 'https://gabrielecirulli.github.io/2048/', hostHint: 'Slide tiles to reach 2048' },
+      { id: 'flappybird', name: 'Flappy Bird', src: 'https://playcanvas.com/project/440468/editor', hostHint: 'Tap to flap and avoid pipes' },
+      { id: 'snake', name: 'Snake Game', src: 'https://seancode.com/snake/', hostHint: 'Classic snake arcade game' },
+      { id: 'pacman', name: 'Pac-Man', src: 'https://pacman.cc/', hostHint: 'Eat pellets and avoid ghosts' },
+      { id: 'minesweeper', name: 'Minesweeper', src: 'https://minesweeper.online/', hostHint: 'Find all hidden mines' },
+      { id: 'checkers', name: 'Checkers', src: 'https://www.gamesforthebrain.com/game/checkers/', hostHint: 'Jump your opponent' },
+      { id: 'connect4', name: 'Connect Four', src: 'https://www.gamesforthebrain.com/game/connect4/', hostHint: 'Get four in a row' },
+      { id: 'tictactoe', name: 'Tic-Tac-Toe', src: 'https://playtictactoe.org/', hostHint: 'Classic strategy game' },
+      { id: 'breakout', name: 'Breakout', src: 'https://playcanvas.com/project/375828/editor', hostHint: 'Break all the bricks' },
+      { id: 'doodle', name: 'Doodle Jump', src: 'https://www.playcanvas.com/project/375811/editor', hostHint: 'Jump higher and higher' },
+      { id: 'asteroids', name: 'Asteroids', src: 'https://playcanvas.com/project/375810/editor', hostHint: 'Shoot all asteroids' },
+      { id: 'pong', name: 'Pong', src: 'https://playcanvas.com/project/375809/editor', hostHint: 'Classic arcade paddle game' },
+      { id: 'spaceships', name: 'Space Shooter', src: 'https://playcanvas.com/project/426236/editor', hostHint: 'Survive the asteroid field' },
+      { id: 'chess', name: 'Chess', src: 'https://lichess.org/embed', hostHint: 'Play chess online' },
     ];
 
     const gameList = document.getElementById('gameList');
     const player = document.getElementById('player');
     const currentTitle = document.getElementById('currentTitle');
-    const openTabBtn = document.getElementById('openTabBtn');
     const homeBtn = document.getElementById('homeBtn');
     const status = document.getElementById('status');
 
@@ -106,9 +109,9 @@
         el.dataset.id = g.id;
         el.innerHTML = `<div style="flex:1">
                         <div class="game-title">${g.name}</div>
-                        <div class="game-sub">${g.hostHint || new URL(g.src).host}</div>
+                        <div class="game-sub">${g.hostHint}</div>
                       </div>
-                      <div style="font-size:0.9rem;color:var(--muted)">Play</div>`;
+                      <div style="font-size:0.9rem;color:var(--muted)">▶</div>`;
         el.addEventListener('click', ()=> selectGame(g));
         gameList.appendChild(el);
       }
@@ -119,39 +122,20 @@
     function selectGame(g){
       currentGame = g;
       currentTitle.textContent = g.name;
-      openTabBtn.disabled = false;
-      openTabBtn.onclick = ()=> window.open(g.src, '_blank', 'noopener');
       status.style.display = 'none';
-      // Set iframe src. This may fail to display if the target blocks embedding.
       player.src = g.src;
-      // Small heuristic: show a short helper message (can't detect embed-block reliably due to cross-origin restrictions)
-      setTimeout(()=> {
-        // If the page inside the iframe is same-origin then we could inspect; since many are cross-origin,
-        // we can't detect blocks reliably. Provide a visible hint instead.
-        status.style.display = 'block';
-        status.textContent = 'If the game does not appear, the site may block embedding. Use "Open in new tab".';
-      }, 900);
     }
 
     // Home button clears the iframe
     homeBtn.addEventListener('click', ()=> {
       currentGame = null;
       player.src = 'about:blank';
-      currentTitle.textContent = 'Select a game';
-      openTabBtn.disabled = true;
+      currentTitle.textContent = 'Select a game to start';
       status.style.display = 'none';
     });
 
     // Init
     buildList();
-    // Optionally load the first game automatically:
-    // selectGame(games[0]);
-
-    // How to add your own game:
-    // 1) Find a direct URL to the game HTML page (must be embeddable).
-    // 2) Add a new item to the games array above:
-    //    { id: 'your-id', name: 'The Game', src: 'https://site.com/game-page', hostHint: 'site.com' }
-    // 3) Save and reload this page.
   </script>
 </body>
 </html>
