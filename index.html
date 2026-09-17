@@ -2,103 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b12">
   <title>Game Hub</title>
   <style>
     :root{--bg:#080b12;--panel:#111827;--card:#182235;--line:#293750;--text:#f8fafc;--muted:#9aa9bf;--accent:#38bdf8;--good:#34d399;--danger:#fb7185}
-    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#14213a 0,#080b12 48%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-    .app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}
-    h1{font-size:1.25rem;margin:0 0 6px}.desc,.hint{color:var(--muted);font-size:.86rem;line-height:1.45}.desc{margin:0 0 18px}.games{display:grid;gap:8px}.game{width:100%;padding:11px 12px;text-align:left;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;cursor:pointer}.game:hover,.game.active{border-color:var(--accent);background:#1c304a}.game strong{display:block}.game span{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}.hint{margin-top:18px}
-    main{min-width:0;padding:24px;display:flex;flex-direction:column}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.title{font-size:1.35rem;font-weight:700}.reset{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:9px 14px;cursor:pointer}.board-wrap{flex:1;display:grid;place-items:center;min-height:420px}.board{width:min(800px,100%);min-height:550px;background:rgba(17,24,39,.9);border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;place-items:center;box-shadow:0 18px 60px #0005}.empty{color:var(--muted);text-align:center}.status{color:var(--muted);margin:0 0 14px;text-align:center}
-    .grid2048{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(420px,100%);aspect-ratio:1}.tile{display:grid;place-items:center;border-radius:8px;background:#263449;font-size:clamp(1.1rem,5vw,2rem);font-weight:800}.tile[data-value="2"]{background:#41536b}.tile[data-value="4"]{background:#55728e}.tile[data-value="8"]{background:#0ea5e9}.tile[data-value="16"]{background:#0284c7}.tile[data-value="32"]{background:#2563eb}.tile[data-value="64"]{background:#7c3aed}.tile[data-value="128"],.tile[data-value="256"],.tile[data-value="512"],.tile[data-value="1024"],.tile[data-value="2048"]{background:#059669}
-    .ttt{display:grid;grid-template-columns:repeat(3,100px);gap:8px}.ttt button{height:100px;font-size:3rem;font-weight:700;color:var(--text);background:#263449;border:0;border-radius:10px;cursor:pointer}.ttt button:hover{background:#334969}
-    .mine{display:grid;grid-template-columns:repeat(8,42px);gap:4px}.mine button{width:42px;height:42px;border:0;border-radius:5px;background:#334155;color:white;font-weight:700;cursor:pointer}.mine button.open{background:#1e293b}.mine button.mine-hit{background:var(--danger)}
-    canvas{max-width:100%;background:#050812;border:1px solid var(--line);border-radius:8px}.controls{color:var(--muted);text-align:center;margin-top:10px}.key{color:var(--text);font-weight:700}
-    iframe.game-embed{width:100%;height:500px;border:0;border-radius:10px;background:#000}
-    @media(max-width:760px){.app{display:block}.sidebar{border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,1fr)}main{padding:16px}.board{padding:12px}.mine{grid-template-columns:repeat(8, minmax(25px,42px))}.mine button{width:100%;height:auto;aspect-ratio:1}.ttt{grid-template-columns:repeat(3,25vw)}.ttt button{height:25vw}}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#14213a 0,#080b12 48%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100svh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}
+    h1{font-size:1.25rem;margin:0 0 6px}.desc,.hint,.controls{color:var(--muted);font-size:.86rem;line-height:1.45}.desc{margin:0 0 18px}.games{display:grid;gap:8px}.game{width:100%;padding:11px 12px;text-align:left;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:9px;cursor:pointer}.game:hover,.game.active{border-color:var(--accent);background:#20314b}.game strong,.game span{display:block}.game span{margin-top:3px;color:var(--muted);font-size:.8rem}.hint{margin-top:18px}
+    main{min-width:0;padding:24px;display:flex;flex-direction:column}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.title{font-size:1.35rem;font-weight:700}.reset{padding:9px 12px;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:8px;cursor:pointer}.board-wrap{min-width:0}.board{min-height:240px;padding:20px;background:rgba(17,24,39,.75);border:1px solid var(--line);border-radius:12px}.empty{text-align:center;color:var(--muted);padding:60px 10px}.status{min-height:22px;margin:0 0 12px;font-weight:600}.controls{text-align:center;margin:10px 0 0}.key{color:var(--text);font-weight:700}
+    .grid2048{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(420px,100%);aspect-ratio:1;touch-action:none}.tile{display:grid;place-items:center;border-radius:8px;background:#263449;font-size:clamp(1.1rem,6vw,2rem);font-weight:700}.tile:not(:empty){background:#2563eb}.ttt{display:grid;grid-template-columns:repeat(3,min(100px,28vw));gap:8px}.ttt button{aspect-ratio:1;font-size:clamp(2rem,12vw,3rem);font-weight:700;color:var(--text);background:#263449;border:0;border-radius:10px;cursor:pointer}.mine{display:grid;grid-template-columns:repeat(8,min(42px,10vw));gap:4px}.mine button{width:min(42px,10vw);aspect-ratio:1;border:0;border-radius:5px;background:#334155;color:#fff;font-weight:700;cursor:pointer}.mine button.open{background:#172235}.mine button.bomb{background:var(--danger)}
+    canvas{display:block;width:min(100%,640px);height:auto;background:#050812;border:1px solid var(--line);border-radius:8px;touch-action:none}.touch-controls{display:grid;grid-template-columns:repeat(3,52px);gap:6px;justify-content:center;margin-top:12px}.touch-controls button{width:52px;height:42px;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:8px}.touch-controls .up{grid-column:2}.touch-controls .left{grid-column:1}.touch-controls .down{grid-column:2}.touch-controls .right{grid-column:3}.pong-touch{display:flex;justify-content:center;gap:10px;margin-top:12px}.pong-touch button{padding:10px 22px;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:8px}
+    .embed-shell{width:100%;overflow:hidden;border-radius:10px;background:#000}.game-embed{display:block;width:100%;height:min(75svh,680px);min-height:420px;border:0}.embed-note{margin:10px 0 0;color:var(--muted);font-size:.82rem}.embed-note a{color:var(--accent)}
+    @media(max-width:760px){.app{display:block}.sidebar{padding:16px;border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.game{padding:10px}.hint{display:none}main{padding:12px}.board{padding:12px}.toolbar{margin-bottom:12px}.title{font-size:1.15rem}.reset{padding:8px 10px}.game-embed{height:70svh;min-height:360px}}
+    @media(max-width:380px){.games{grid-template-columns:1fr}.game span{display:none}}
   </style>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <h1>🎮 Game Hub</h1>
-      <p class="desc">Small games that run directly in this page.</p>
-      <div class="games" id="games"></div>
-      <p class="hint">Everything here is part of this page, so it works as a normal GitHub Pages site.</p>
-    </aside>
-    <main>
-      <div class="toolbar">
-        <div class="title" id="title">Choose a game</div>
-        <button class="reset" id="reset" type="button" hidden>Restart / Reload</button>
-      </div>
-      <section class="board-wrap">
-        <div class="board" id="board">
-          <div class="empty">Select a game on the left to start.</div>
-        </div>
-      </section>
-    </main>
-  </div>
+  <div class="app"><aside class="sidebar"><h1>🎮 Game Hub</h1><p class="desc">Small games that run directly in this page.</p><div class="games" id="games"></div><p class="hint">Use touch controls or swipe on mobile. Embedded games may also be opened in a new tab if their host blocks frames.</p></aside>
+  <main><div class="toolbar"><div class="title" id="title">Choose a game</div><button class="reset" id="reset" type="button" hidden>Restart</button></div><section class="board-wrap"><div class="board" id="board"><div class="empty">Select a game on the left to start.</div></div></section></main></div>
 <script>
-const games=[
-  ['2048','2048','Slide the tiles'],
-  ['snake','Snake','Eat the food'],
-  ['ttt','Tic-Tac-Toe','Beat the computer'],
-  ['mines','Minesweeper','Find the safe squares'],
-  ['pong','Pong','Use the keyboard'],
-  ['bitlife','BitLife','Life Simulator (Embedded)'],
-  ['spacewaves','Space Waves','3D Wave Runner (Embedded)']
-];
-
-const list=document.querySelector('#games'),board=document.querySelector('#board'),title=document.querySelector('#title'),reset=document.querySelector('#reset');
-let cleanup=()=>{};
-
-games.forEach(([id,name,sub])=>{
-  const b=document.createElement('button');
-  b.className='game';
-  b.innerHTML=`<strong>${name}</strong><span>${sub}</span>`;
-  b.onclick=()=>start(id,b);
-  list.append(b);
-});
-
-function start(id,button){
-  document.querySelectorAll('.game').forEach(x=>x.classList.remove('active'));
-  button.classList.add('active');
-  cleanup();
-  cleanup=()=>{};
-  title.textContent=games.find(x=>x[0]===id)[1];
-  reset.hidden=false;
-  reset.onclick=()=>start(id,button);
-
-  const jsGames = {
-    2048: game2048,
-    snake: gameSnake,
-    ttt: gameTtt,
-    mines: gameMines,
-    pong: gamePong,
-    bitlife: gameBitlife,
-    spacewaves: gameSpaceWaves
-  };
-
-  if(jsGames[id]) jsGames[id]();
-}
-
-function embedIframe(url) {
-  board.innerHTML = `<iframe class="game-embed" src="${url}" allow="autoplay; keyboard; focus-without-user-activation" allowfullscreen></iframe>`;
-}
-
-function gameBitlife() {
-  embedIframe('https://bitlifeonline.github.io/');
-}
-
-function gameSpaceWaves() {
-  embedIframe('https://3kh0-assets.3kh0.net/space-waves/index.html');
-}
-
-function game2048(){let a=Array(16).fill(0),score=0;board.innerHTML='<div><p class="status" id="status"></p><div class="grid2048" id="g"></div><p class="controls">Use <span class="key">arrow keys</span> or swipe</p></div>';const g=document.querySelector('#g'),st=document.querySelector('#status');function add(){let z=a.map((v,i)=>v?null:i).filter(x=>x!==null);if(z.length)a[z[Math.floor(Math.random()*z.length)]]=Math.random()<.9?2:4}function draw(){g.replaceChildren();a.forEach(v=>{const x=document.createElement('div');x.className='tile';x.dataset.value=v;x.textContent=v||'';g.append(x)});st.textContent=`Score: ${score}`+(a.some(v=>v===2048)?' — You win!':'')}function move(dir){let old=a.join(),rows=[];for(let r=0;r<4;r++){let q=[0,1,2,3].map(i=>a[r*4+i]);if(dir==='up'||dir==='down')q=[0,1,2,3].map(i=>a[i*4+r]);if(dir==='right'||dir==='down')q.reverse();q=q.filter(Boolean);for(let i=0;i<q.length-1;i++)if(q[i]===q[i+1]){q[i]*=2;score+=q[i];q.splice(i+1,1)}while(q.length<4)q.push(0);if(dir==='right'||dir==='down')q.reverse();rows.push(q)}if(dir==='up'||dir==='down')a=a.map((_,i)=>rows[i%4][Math.floor(i/4)]);else a=rows.flat();if(a.join()!==old)add();draw()}add();add();draw();const key=e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();move(e.key.slice(5).toLowerCase())}};addEventListener('keydown',key);cleanup=()=>removeEventListener('keydown',key)}
-function gameTtt(){let cells=Array(9).fill(''),over=false;board.innerHTML='<div><p class="status" id="status">Your turn (X)</p><div class="ttt" id="ttt"></div></div>';const g=document.querySelector('#ttt'),st=document.querySelector('#status');function win(x){return [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(r=>r.every(i=>cells[i]===x))}function draw(){g.replaceChildren();cells.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v;b.onclick=()=>{if(over||cells[i])return;cells[i]='X';if(win('X')||cells.every(Boolean)){over=true;st.textContent=win('X')?'You win!':'Draw!';draw();return}let empty=cells.map((v,j)=>v?null:j).filter(v=>v!==null),j=empty[Math.floor(Math.random()*empty.length)];cells[j]='O';if(win('O')){over=true;st.textContent='Computer wins!'}else if(cells.every(Boolean)){over=true;st.textContent='Draw!'}draw()};g.append(b)})}draw()}
-function gameMines(){const n=64,mines=new Set();while(mines.size<10)mines.add(Math.floor(Math.random()*n));let open=Array(n).fill(false);board.innerHTML='<div><p class="status" id="status">Find the 10 mines</p><div class="mine" id="mine"></div></div>';const g=document.querySelector('#mine'),st=document.querySelector('#status');function draw(){g.replaceChildren();for(let i=0;i<n;i++){let b=document.createElement('button');b.className=open[i]?'open':'';if(open[i]){if(mines.has(i)){b.textContent='💣';b.className+=' mine-hit'}else{let c=[-1,1,-8,8,-9,-7,7,9].filter(d=>{let x=i+d;return x>=0&&x<n&&Math.abs((x%8)-(i%8))<=1}).filter(x=>mines.has(x)).length;b.textContent=c||''}}b.onclick=()=>{if(open[i])return;open[i]=true;if(mines.has(i)){st.textContent='Boom! Try a new game.';open=open.map((_,j)=>mines.has(j));}else if(open.filter((v,j)=>v&&!mines.has(j)).length===n-mines.size)st.textContent='You cleared the board!';draw()};g.append(b)}}draw()}
-function gameSnake(){board.innerHTML='<div><p class="status" id="status">Score: 0</p><canvas width="400" height="400"></canvas><p class="controls">Use the <span class="key">arrow keys</span></p></div>';const c=board.querySelector('canvas'),x=c.getContext('2d'),st=document.querySelector('#status');let s=[{x:10,y:10}],d={x:1,y:0},food={x:15,y:15},dead=false;function key(e){if(e.key==='ArrowUp'&&d.y===0)d={x:0,y:-1};if(e.key==='ArrowDown'&&d.y===0)d={x:0,y:1};if(e.key==='ArrowLeft'&&d.x===0)d={x:-1,y:0};if(e.key==='ArrowRight'&&d.x===0)d={x:1,y:0}}addEventListener('keydown',key);let timer=setInterval(()=>{if(dead)return;let h={x:s[0].x+d.x,y:s[0].y+d.y};if(h.x<0||h.y<0||h.x>=20||h.y>=20||s.some(q=>q.x===h.x&&q.y===h.y)){dead=true;st.textContent='Game over — start a new game';return}s.unshift(h);if(h.x===food.x&&h.y===food.y){food={x:Math.floor(Math.random()*20),y:Math.floor(Math.random()*20)};st.textContent=`Score: ${s.length-1}`}else s.pop();x.fillStyle='#050812';x.fillRect(0,0,400,400);x.fillStyle='#34d399';s.forEach(q=>x.fillRect(q.x*20+1,q.y*20+1,18,18));x.fillStyle='#fb7185';x.fillRect(food.x*20+2,food.y*20+2,16,16)},110);cleanup=()=>{clearInterval(timer);removeEventListener('keydown',key)}}
-function gamePong(){board.innerHTML='<div><p class="status" id="status">First to 5 wins</p><canvas width="640" height="360"></canvas><p class="controls">Move with <span class="key">W/S</span> or <span class="key">↑/↓</span></p></div>';const c=board.querySelector('canvas'),x=c.getContext('2d'),st=document.querySelector('#status');let py=150,ay=150,bx=320,by=180,vx=4,vy=3,score=0,ai=0;function key(e){if(e.key==='w'||e.key==='ArrowUp')py-=22;if(e.key==='s'||e.key==='ArrowDown')py+=22;py=Math.max(0,Math.min(300,py))}addEventListener('keydown',key);let timer=setInterval(()=>{bx+=vx;by+=vy;ay+=(by-ay)*.08;if(by<8||by>352)vy*=-1;if(bx<30&&by>py&&by<py+60||bx>610&&by>ay&&by<ay+60)vx*=-1;if(bx<0){score--;resetBall()}if(bx>640){score++;resetBall()}if(score>=5||score<=-5){st.textContent=score>=5?'You win!':'Computer wins!';clearInterval(timer)}x.fillStyle='#050812';x.fillRect(0,0,640,360);x.fillStyle='#38bdf8';x.fillRect(15,py,15,60);x.fillStyle='#fb7185';x.fillRect(610,ay,15,60);x.fillStyle='#f8fafc';x.fillRect(bx-6,by-6,12,12);st.textContent=`You ${Math.max(0,score)} — ${Math.max(0,-score)} Computer`},16);function resetBall(){bx=320;by=180;vx*=-1}cleanup=()=>{clearInterval(timer);removeEventListener('keydown',key)}}
-</script>
-</body>
-</html>
+const games=[['2048','2048','Swipe or use arrows'],['snake','Snake','Touch controls included'],['ttt','Tic-Tac-Toe','Beat the computer'],['mines','Minesweeper','Find safe squares'],['pong','Pong','Touch or use W/S'],['bitlife','BitLife','Embedded from PlaySpark'],['spacewaves','Space Waves','Embedded from OzGames']];
+const list=document.querySelector('#games'),board=document.querySelector('#board'),title=document.querySelector('#title'),reset=document.querySelector('#reset');let cleanup=()=>{};
+games.forEach(([id,name,sub])=>{const b=document.createElement('button');b.className='game';b.innerHTML=`<strong>${name}</strong><span>${sub}</span>`;b.onclick=()=>start(id,b);list.append(b)});
+function start(id,button){document.querySelectorAll('.game').forEach(x=>x.classList.remove('active'));button.classList.add('active');cleanup();cleanup=()=>{};title.textContent=games.find(x=>x[0]===id)[1];reset.hidden=false;reset.onclick=()=>start(id,button);({2048:game2048,snake:gameSnake,ttt:gameTtt,mines:gameMines,pong:gamePong,bitlife:gameBitlife,spacewaves:gameSpaceWaves}[id])()}
+function embedIframe(url,link){board.innerHTML=`<div class="embed-shell"><iframe class="game-embed" src="${url}" title="Embedded game" allow="autoplay; fullscreen; gamepad; keyboard" allowfullscreen></iframe></div><p class="embed-note">If the game does not load, <a href="${link||url}" target="_blank" rel="noopener">open it in a new tab</a>.</p>`}
+function gameBitlife(){embedIframe('https://playspark.net/games/bitlife','https://playspark.net/games/bitlife')}
+function gameSpaceWaves(){embedIframe('https://ozgames.io/space-waves','https://ozgames.io/space-waves')}
+function game2048(){let a=Array(16).fill(0),score=0,locked=false;const add=()=>{let z=a.map((v,i)=>v?null:i).filter(i=>i!==null);if(z.length)a[z[Math.random()*z.length|0]]=Math.random()<.9?2:4};add();add();board.innerHTML='<div><p class="status" id="status"></p><div class="grid2048" id="g"></div><p class="controls">Swipe or use the arrow keys</p></div>';const g=document.querySelector('#g'),s=document.querySelector('#status');function draw(){g.innerHTML=a.map(v=>`<div class="tile">${v||''}</div>`).join('');s.textContent=`Score: ${score}`}function move(dir){if(locked)return;let old=a.join(),n=a.slice();for(let r=0;r<4;r++){let line=[];for(let c=0;c<4;c++)line.push(dir==='left'||dir==='right'?a[r*4+c]:a[c*4+r]);if(dir==='right'||dir==='down')line.reverse();line=line.filter(Boolean);for(let i=0;i<line.length-1;i++)if(line[i]===line[i+1]){line[i]*=2;score+=line[i];line.splice(i+1,1)}while(line.length<4)line.push(0);if(dir==='right'||dir==='down')line.reverse();for(let c=0;c<4;c++)if(dir==='left'||dir==='right')n[r*4+c]=line[c];else n[c*4+r]=line[c]}a=n;if(a.join()!==old)add();draw()}function key(e){if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();move(e.key.slice(5).toLowerCase())}}let sx,sy;function touch(e){let t=e.changedTouches[0];if(sx===undefined){sx=t.clientX;sy=t.clientY;return}let dx=t.clientX-sx,dy=t.clientY-sy;sx=sy=undefined;if(Math.max(Math.abs(dx),Math.abs(dy))<25)return;move(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))}window.addEventListener('keydown',key);g.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});g.addEventListener('touchend',touch,{passive:true});cleanup=()=>window.removeEventListener('keydown',key);draw()}
+function pad(){return '<div class="touch-controls"><button class="up" data-d="up">▲</button><button class="left" data-d="left">◀</button><button class="down" data-d="down">▼</button><button class="right" data-d="right">▶</button></div>'}
+function gameSnake(){let x=10,y=10,dx=1,dy=0,food=[15,15],body=[[10,10]],score=0,dead=false;board.innerHTML='<div><p class="status" id="status">Score: 0</p><canvas width="400" height="400"></canvas>'+pad()+'<p class="controls">Swipe or use the buttons</p></div>';const c=board.querySelector('canvas'),ctx=c.getContext('2d'),s=board.querySelector('.status');function turn(d){if(d==='up'&&dy!==1)[dx=0,dy=-1];if(d==='down'&&dy!==-1)[dx=0,dy=1];if(d==='left'&&dx!==1)[dx=-1,dy=0];if(d==='right'&&dx!==-1)[dx=1,dy=0]}board.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>turn(b.dataset.d));function tick(){if(dead)return;x+=dx;y+=dy;if(x<0||x>=20||y<0||y>=20||body.some(p=>p[0]===x&&p[1]===y)){dead=true;s.textContent='Game over — press Restart';return}body.unshift([x,y]);if(x===food[0]&&y===food[1]){score++;s.textContent='Score: '+score;do{food=[Math.random()*20|0,Math.random()*20|0]}while(body.some(p=>p[0]===food[0]&&p[1]===food[1]))}else body.pop();ctx.clearRect(0,0,400,400);ctx.fillStyle='#fb7185';ctx.fillRect(food[0]*20,food[1]*20,20,20);ctx.fillStyle='#34d399';body.forEach(p=>ctx.fillRect(p[0]*20,p[1]*20,19,19))}let timer=setInterval(tick,120);cleanup=()=>clearInterval(timer);}
+function gameTtt(){let a=Array(9).fill(''),over=false;board.innerHTML='<div><p class="status" id="status">Your turn (X)</p><div class="ttt" id="ttt"></div></div>';const g=board.querySelector('#ttt'),s=board.querySelector('.status');function win(v){return[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(q=>q.every(i=>v[i]))}function draw(){g.innerHTML=a.map((v,i)=>`<button data-i="${i}">${v}</button>`).join('');g.querySelectorAll('button').forEach(b=>b.onclick=()=>play(+b.dataset.i))}function play(i){if(over||a[i])return;a[i]='X';if(win(a)){s.textContent='You win!';over=true}else if(a.every(Boolean)){s.textContent='Draw';over=true}else{let free=a.map((v,i)=>v?null:i).filter(i=>i!==null),j=free[Math.random()*free.length|0];a[j]='O';if(win(a)){s.textContent='Computer wins';over=true}else s.textContent='Your turn (X)'}draw()}draw()}
+function gameMines(){const n=64,mines=new Set();while(mines.size<10)mines.add(Math.random()*n|0);let open=Array(n).fill(false);board.innerHTML='<div><p class="status" id="status">Find the 10 mines</p><div class="mine"></div></div>';const g=board.querySelector('.mine'),s=board.querySelector('.status');function count(i){let r=i/8|0,c=i%8,z=0;for(let y=-1;y<2;y++)for(let x=-1;x<2;x++)if(mines.has((r+y)*8+c+x))z++;return z}function draw(){g.innerHTML=open.map((v,i)=>`<button class="${v?'open':''}" data-i="${i}">${v?(mines.has(i)?'💣':count(i)||''):''}</button>`).join('');g.querySelectorAll('button').forEach(b=>b.onclick=()=>{let i=+b.dataset.i;if(open[i])return;if(mines.has(i)){open.fill(true);s.textContent='Boom! Press Restart';g.querySelectorAll('button').forEach(x=>x.classList.add('bomb'))}else{open[i]=true;s.textContent=`Safe squares: ${open.filter(Boolean).length}/54`}draw()})}draw()}
+function gamePong(){board.innerHTML='<div><p class="status" id="status">First to 5 wins</p><canvas width="640" height="360"></canvas><div class="pong-touch"><button data-p="-1">▲ Up</button><button data-p="1">▼ Down</button></div></div>';const c=board.querySelector('canvas'),ctx=c.getContext('2d'),s=board.querySelector('.status');let py=150,ball={x:320,y:180,vx:4,vy:3},keys={};function key(e){keys[e.key.toLowerCase()]=e.type==='keydown'}window.addEventListener('keydown',key);window.addEventListener('keyup',key);let touch=0;board.querySelectorAll('[data-p]').forEach(b=>{b.onpointerdown=()=>touch=+b.dataset.p;b.onpointerup=()=>touch=0});let timer=setInterval(()=>{py+=((keys.w?-5:0)+(keys.s?5:0)+touch*5);py=Math.max(0,Math.min(300,py));ball.x+=ball.vx;ball.y+=ball.vy;if(ball.y<8||ball.y>352)ball.vy*=-1;if(ball.x<28&&ball.y>py&&ball.y<py+60)ball.vx=Math.abs(ball.vx);if(ball.x>612&&ball.y>py&&ball.y<py+60)ball.vx=-Math.abs(ball.vx);if(ball.x<0||ball.x>640){s.textContent=ball.x<0?'Computer scores — Restart to play':'You score!';ball={x:320,y:180,vx:4*(ball.x<0?1:-1),vy:3}}ctx.clearRect(0,0,640,360);ctx.fillStyle='#f8fafc';ctx.fillRect(18,py,10,60);ctx.fillRect(612,150,10,60);ctx.beginPath();ctx.arc(ball.x,ball.y,8,0,7);ctx.fill()},16);cleanup=()=>{clearInterval(timer);window.removeEventListener('keydown',key);window.removeEventListener('keyup',key)}}
+</script></body></html>
