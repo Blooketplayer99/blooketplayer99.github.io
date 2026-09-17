@@ -9,9 +9,11 @@
     :root{--bg:#080b12;--panel:#111827;--card:#182235;--line:#293750;--text:#f8fafc;--muted:#9aa9bf;--accent:#38bdf8}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#14213a,#080b12 48%);color:var(--text);font:15px system-ui,sans-serif}
     button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}
-    h1{font-size:1.25rem;margin:0 0 6px}.desc,.hint{color:var(--muted);font-size:.86rem;line-height:1.45}.desc{margin:0 0 18px}.games{display:grid;gap:8px}.game{width:100%;padding:11px 12px;text-align:left;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:9px;cursor:pointer}.game:hover,.game.active{border-color:var(--accent);background:#20314b}.game strong,.game span{display:block}.game span{margin-top:3px;color:var(--muted);font-size:.8rem}
-    main{min-width:0;padding:24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.title{font-size:1.35rem;font-weight:700}.reset{padding:9px 12px;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:8px;cursor:pointer}.board{min-height:calc(100vh - 100px);padding:18px;background:rgba(17,24,39,.7);border:1px solid var(--line);border-radius:12px}.empty,.message{color:var(--muted)}.message{text-align:center;padding:22px}.message p{margin:8px 0}.game-link{color:var(--accent)}iframe{display:block;width:100%;height:calc(100vh - 135px);min-height:520px;border:0;border-radius:8px;background:#fff}
-    @media(max-width:760px){.app{display:block}.sidebar{padding:16px;border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}main{padding:12px}iframe{height:calc(100vh - 230px);min-height:480px}}
+    .games{display:grid;gap:8px}.game{width:100%;padding:11px 12px;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);cursor:pointer;transition:.2s ease}.game:hover,.game.active{border-color:var(--accent);background:#1c2b44}.game strong,.game span{display:block}.game span{margin-top:4px;color:var(--muted);font-size:.78rem}
+    h1{font-size:1.25rem;margin:0 0 6px}.desc,.hint{color:var(--muted);font-size:.86rem;line-height:1.45}.desc{margin:0 0 18px}.hint{margin-top:18px}
+    main{min-width:0;padding:24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.title{font-size:1.35rem;font-weight:700}.reset{padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);cursor:pointer}.board{background:rgba(17,24,39,.72);border:1px solid var(--line);border-radius:18px;min-height:420px;padding:18px;display:grid;place-items:center}.empty,.message{color:var(--muted);text-align:center;line-height:1.6}.status{color:var(--text);font-weight:700;margin-bottom:8px}.message a{color:var(--accent)}
+    iframe{width:100%;height:calc(100vh - 170px);min-height:420px;border:0;border-radius:12px;background:#000}
+    @media(max-width:760px){.app{display:block}.sidebar{padding:16px;border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}main{padding:12px}iframe{height:60vh}}
     @media(max-width:380px){.games{grid-template-columns:1fr}.game span{display:none}}
   </style>
 </head>
@@ -29,16 +31,54 @@
     </main>
   </div>
   <script>
-    const games=[['2048','2048','Swipe or use arrows'],['snake','Snake','Touch controls included'],['ttt','Tic-Tac-Toe','Beat the computer'],['mines','Minesweeper','Find safe squares'],['pong','Pong','Touch or use W/S'],['bitlife','BitLife','Open the embedded game'],['spacewaves','Space Waves','Open the embedded game']];
+    const games=[['2048','2048','Swipe or use arrows'],['snake','Snake','Touch controls included'],['ttt','Tic-Tac-Toe','Beat the computer'],['mines','Minesweeper','Find safe squares'],['pong','Pong','Classic arcade action'],['bitlife','BitLife','Life sim from a new tab'],['spacewaves','Space Waves','Play in a new tab'],['soccerlegends','Soccer Legends','Take on the world']];
     const list=document.getElementById('games'),board=document.getElementById('board'),title=document.getElementById('title'),reset=document.getElementById('reset');
     let current=null;
-    games.forEach(([id,name,sub])=>{const button=document.createElement('button');button.type='button';button.className='game';const strong=document.createElement('strong');strong.textContent=name;const span=document.createElement('span');span.textContent=sub;button.append(strong,span);button.addEventListener('click',()=>start(id,button));list.appendChild(button)});
-    function start(id,button){document.querySelectorAll('.game').forEach(x=>x.classList.remove('active'));button.classList.add('active');current=id;title.textContent=games.find(g=>g[0]===id)[1];reset.hidden=false;render()}
+
+    games.forEach(([id,name,sub])=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='game';
+      const strong=document.createElement('strong');
+      strong.textContent=name;
+      const span=document.createElement('span');
+      span.textContent=sub;
+      button.appendChild(strong);
+      button.appendChild(span);
+      button.addEventListener('click',()=>start(id,button));
+      list.appendChild(button);
+    });
+
+    function start(id,button){
+      document.querySelectorAll('.game').forEach(x=>x.classList.remove('active'));
+      button.classList.add('active');
+      current=id;
+      title.textContent=games.find(g=>g[0]===id)[1];
+      reset.hidden=false;
+      render();
+    }
+
     function render(){
-      const links={bitlife:'https://bitlife-freeonline.github.io/',spacewaves:'https://spacewavesunblocked.github.io/'};
-      if(links[current]){board.innerHTML='';const message=document.createElement('div');message.className='message';message.innerHTML='<p>Loading '+title.textContent+'…</p><p>If it does not load here, <a class="game-link" href="'+links[current]+'" target="_blank" rel="noopener">open it in a new tab</a>.</p>';board.appendChild(message);const iframe=document.createElement('iframe');iframe.src=links[current];iframe.title=title.textContent;iframe.allow='autoplay; fullscreen; gamepad; keyboard';iframe.allowFullscreen=true;board.appendChild(iframe);return}
+      const links={
+        bitlife:'https://bitlife-freeonline.github.io/',
+        spacewaves:'https://spacewavesunblocked.github.io/',
+        soccerlegends:'https://spacewavesunblocked.github.io/soccer-legends.html'
+      };
+
+      if(links[current]){
+        board.innerHTML='';
+        const iframe=document.createElement('iframe');
+        iframe.src=links[current];
+        iframe.title=title.textContent;
+        iframe.loading='lazy';
+        iframe.setAttribute('allowfullscreen','true');
+        board.appendChild(iframe);
+        return;
+      }
+
       board.innerHTML='<div class="message"><p class="status">'+title.textContent+' selected.</p><p>The game is ready to start. Use the controls shown here once the game loads.</p></div>';
     }
+
     reset.addEventListener('click',()=>{if(current)render()});
   </script>
 </body>
