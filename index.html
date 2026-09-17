@@ -8,12 +8,8 @@
   <style>
     :root{--bg:#080b12;--panel:#111827;--card:#182235;--line:#293750;--text:#f8fafc;--muted:#9aa9bf;--accent:#38bdf8}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#14213a,#080b12 48%);color:var(--text);font:15px system-ui,sans-serif}
-    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}
-    .games{display:grid;gap:8px}.game{width:100%;padding:11px 12px;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);cursor:pointer;transition:.2s ease}.game:hover,.game.active{border-color:var(--accent);background:#1c2b44}.game strong,.game span{display:block}.game span{margin-top:4px;color:var(--muted);font-size:.78rem}
-    h1{font-size:1.25rem;margin:0 0 6px}.desc,.hint{color:var(--muted);font-size:.86rem;line-height:1.45}.desc{margin:0 0 18px}.hint{margin-top:18px}
-    main{min-width:0;padding:24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.title{font-size:1.35rem;font-weight:700}.reset{padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);cursor:pointer}.board{background:rgba(17,24,39,.72);border:1px solid var(--line);border-radius:18px;min-height:420px;padding:18px;display:grid;place-items:center}.empty,.message{color:var(--muted);text-align:center;line-height:1.6}.status{color:var(--text);font-weight:700;margin-bottom:8px}.message a{color:var(--accent)}
-    iframe{width:100%;height:calc(100vh - 170px);min-height:420px;border:0;border-radius:12px;background:#000}
-    @media(max-width:760px){.app{display:block}.sidebar{padding:16px;border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}main{padding:12px}iframe{height:60vh}}
+    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}.sidebar h1{margin:0 0 8px;font-size:1.25rem}.games{display:grid;gap:8px}.game{width:100%;padding:11px 12px;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);cursor:pointer;transition:.2s ease}.game:hover{border-color:var(--accent)}.game.active{outline:2px solid var(--accent);background:#1d2d46}.game strong,.game span{display:block}.game span{margin-top:3px;color:var(--muted);font-size:.8rem}.desc,.hint{color:var(--muted);font-size:.86rem;line-height:1.45}.desc{margin:0 0 18px}.hint{margin-top:18px}main{min-width:0;padding:24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.title{font-size:1.35rem;font-weight:700}.reset{padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#0f172a;color:var(--text);cursor:pointer}.reset[hidden]{display:none}.board{background:rgba(15,23,42,.55);border:1px solid var(--line);border-radius:16px;padding:16px;min-height:420px}.empty,.message{display:grid;place-items:center;min-height:420px;color:var(--muted);text-align:center}.status{font-size:1.15rem;color:var(--text);margin-bottom:8px}iframe{width:100%;height:calc(100vh - 170px);min-height:420px;border:0;border-radius:12px;background:#000}
+    @media(max-width:760px){.app{display:block}.sidebar{padding:16px;border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}main{padding:12px}.board,.empty,.message{min-height:300px}iframe{height:60vh}}
     @media(max-width:380px){.games{grid-template-columns:1fr}.game span{display:none}}
   </style>
 </head>
@@ -31,7 +27,14 @@
     </main>
   </div>
   <script>
-    const games=[['2048','2048','Swipe or use arrows'],['snake','Snake','Touch controls included'],['ttt','Tic-Tac-Toe','Beat the computer'],['mines','Minesweeper','Find safe squares'],['pong','Pong','Classic arcade action'],['bitlife','BitLife','Life sim from a new tab'],['spacewaves','Space Waves','Play in a new tab'],['soccerlegends','Soccer Legends','Take on the world']];
+    const games=[
+      ['2048','2048','Swipe or use arrows'],
+      ['snake','Snake','Touch controls included'],
+      ['ttt','Tic-Tac-Toe','Beat the computer'],
+      ['mines','Minesweeper','Find safe squares'],
+      ['pong','Pong','Classic table tennis'],
+      ['motox3m','Moto X3M','Ride the track']
+    ];
     const list=document.getElementById('games'),board=document.getElementById('board'),title=document.getElementById('title'),reset=document.getElementById('reset');
     let current=null;
 
@@ -62,7 +65,8 @@
       const links={
         bitlife:'https://bitlife-freeonline.github.io/',
         spacewaves:'https://spacewavesunblocked.github.io/',
-        soccerlegends:'https://spacewavesunblocked.github.io/soccer-legends.html'
+        soccerlegends:'https://spacewavesunblocked.github.io/soccer-legends.html',
+        motox3m:'https://moto3xmbike.github.io/'
       };
 
       if(links[current]){
