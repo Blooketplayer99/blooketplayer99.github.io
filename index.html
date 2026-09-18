@@ -8,14 +8,15 @@
   <style>
     :root{--bg:#080b12;--panel:#111827;--card:#182235;--line:#293750;--text:#f8fafc;--muted:#9aa9bf;--accent:#38bdf8}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#14213a,#080b12 48%);color:var(--text);font:15px system-ui,sans-serif}
-    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}.sidebar h1{margin:0 0 10px;font-size:1.9rem}.desc{margin:0 0 18px;color:var(--muted)}.games{display:grid;gap:10px}.game{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(180deg,#182235,#121b2b);color:var(--text);text-align:left;cursor:pointer;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}.game:hover{transform:translateY(-1px);border-color:#4b6ea7}.game.active{background:linear-gradient(180deg,#1f3b5d,#16283d);border-color:#5ab7ff;box-shadow:0 0 0 1px rgba(56,189,248,.5)}.game strong{font-size:1.02rem}.game span{color:var(--muted);font-size:.77rem}.hint{margin-top:18px;color:var(--muted);font-size:.9rem}main{padding:18px 20px 24px;display:flex;flex-direction:column;min-width:0}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 2px 14px}.title{font-size:clamp(1.5rem,2.2vw,2.2rem);font-weight:700}.reset{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#111827;color:var(--text);cursor:pointer}.board{flex:1;display:grid;place-items:center;background:rgba(14,20,31,.72);border:1px solid var(--line);border-radius:18px;min-height:520px;box-shadow:inset 0 1px 0 rgba(148,163,184,.08)}.empty,.message{max-width:640px;padding:22px;text-align:center;color:var(--muted)}.status{margin:0 0 8px;color:var(--text);font-size:1.15rem;font-weight:600}.board iframe{width:100%;height:100%;min-height:520px;border:0;border-radius:18px;background:#000}.message{color:var(--muted)}@media(max-width:760px){.app{display:block}.sidebar{padding:16px;border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}main{padding:12px}.board{min-height:420px}.board iframe{min-height:420px}}@media(max-width:380px){.games{grid-template-columns:1fr}.game span{display:none}}
+    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}.sidebar h1{margin:0 0 8px}.desc,.hint{color:var(--muted);line-height:1.5}.games{display:grid;gap:10px;margin-top:24px}.game{display:grid;gap:4px;width:100%;padding:13px;text-align:left;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;cursor:pointer}.game:hover,.game.active{border-color:var(--accent);background:#1d3048}.game span{color:var(--muted);font-size:13px}main{min-width:0}.toolbar{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--line)}.title{font-size:20px;font-weight:700}.reset{padding:8px 14px;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:8px;cursor:pointer}.board{height:calc(100vh - 73px);padding:20px}.board iframe{display:block;width:100%;height:100%;min-height:500px;border:0;border-radius:10px;background:#fff}.empty,.message{display:grid;place-items:center;height:100%;color:var(--muted);text-align:center}
+    @media(max-width:700px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr))}.board{height:calc(100vh - 300px);padding:12px}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
       <h1>🎮 Game Hub</h1>
-      <p class="desc">Small games that run directly in this page.</p>
+      <p class="desc">Games that run directly in this page.</p>
       <div class="games" id="games"></div>
       <p class="hint">Click a game above to start it.</p>
     </aside>
@@ -26,11 +27,9 @@
   </div>
   <script>
     const games=[
-      ['2048','2048','Swipe or use arrows'],
-      ['snake','Snake','Touch controls included'],
-      ['ttt','Tic-Tac-Toe','Beat the computer'],
-      ['mines','Minesweeper','Find safe squares'],
-      ['pong','Pong','Classic table tennis'],
+      ['bitlife','BitLife','Live a virtual life'],
+      ['spacewaves','Space Waves','Navigate the waves'],
+      ['soccerlegends','Soccer Legends','Play soccer matches'],
       ['motox3m','Moto X3M','Ride the track']
     ];
     const list=document.getElementById('games'),board=document.getElementById('board'),title=document.getElementById('title'),reset=document.getElementById('reset');
@@ -67,18 +66,13 @@
         motox3m:'https://moto-x3monline.github.io/'
       };
 
-      if(links[current]){
-        board.innerHTML='';
-        const iframe=document.createElement('iframe');
-        iframe.src=links[current];
-        iframe.title=title.textContent;
-        iframe.loading='lazy';
-        iframe.setAttribute('allowfullscreen','true');
-        board.appendChild(iframe);
-        return;
-      }
-
-      board.innerHTML='<div class="message"><p class="status">'+title.textContent+' selected.</p><p>The game is ready to start. Use the controls shown here once the game loads.</p></div>';
+      board.innerHTML='';
+      const iframe=document.createElement('iframe');
+      iframe.src=links[current];
+      iframe.title=title.textContent;
+      iframe.loading='lazy';
+      iframe.setAttribute('allowfullscreen','true');
+      board.appendChild(iframe);
     }
 
     reset.addEventListener('click',()=>{if(current)render()});
