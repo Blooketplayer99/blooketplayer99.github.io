@@ -8,8 +8,10 @@
   <style>
     :root{--bg:#080b12;--panel:#111827;--card:#182235;--line:#293750;--text:#f8fafc;--muted:#9aa9bf;--accent:#38bdf8}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#14213a,#080b12 48%);color:var(--text);font:15px system-ui,sans-serif}
-    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}.sidebar h1{margin:0 0 12px;font-size:2rem}.desc,.hint{color:var(--muted);margin:0 0 16px}.games{display:grid;gap:12px}.game{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,#111827,#0f172a);color:var(--text);text-align:left;cursor:pointer;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}.game:hover{transform:translateY(-1px);border-color:#4b658d}.game.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(56,189,248,.4)}.game strong{font-size:1.05rem}.game span{color:var(--muted);font-size:.82rem}main{display:flex;flex-direction:column;min-width:0}.toolbar{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line);background:rgba(9,14,20,.72);backdrop-filter:blur(6px);position:sticky;top:0;z-index:2}.title{font-size:1.4rem;font-weight:700}.reset{padding:9px 14px;border:1px solid var(--line);border-radius:10px;background:#0f172a;color:var(--text);cursor:pointer}.board{padding:18px;display:flex;min-height:calc(100vh - 77px)}.board iframe{width:100%;height:100%;min-height:680px;border:1px solid var(--line);border-radius:16px;background:#000}.empty{display:grid;place-items:center;text-align:center;color:var(--muted);width:100%;min-height:300px;border:1px dashed var(--line);border-radius:16px;background:rgba(17,24,39,.65)}
-    @media(max-width:700px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr))}.board{height:calc(100vh - 3px)}.board iframe{min-height:420px}}
+    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}
+    h1{margin:0 0 8px;font-size:22px}.desc,.hint{color:var(--muted);line-height:1.5}.games{display:grid;gap:10px;margin-top:22px}.game{display:grid;gap:4px;width:100%;padding:13px;text-align:left;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;cursor:pointer}.game:hover,.game.active{border-color:var(--accent);background:#20314a}.game span{font-size:12px;color:var(--muted)}
+    main{min-width:0}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid var(--line);background:rgba(17,24,39,.72)}.title{font-size:18px;font-weight:700}.reset{padding:8px 14px;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:8px;cursor:pointer}.reset:hover{border-color:var(--accent)}.board{height:calc(100vh - 61px);padding:18px}.board iframe{display:block;width:100%;height:100%;border:1px solid var(--line);border-radius:10px;background:#000}.empty{display:grid;place-items:center;height:100%;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+    @media(max-width:700px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr))}.board{height:calc(100vh - 360px);min-height:420px}}
   </style>
 </head>
 <body>
@@ -31,7 +33,8 @@
       ['spacewaves','Space Waves','Navigate the waves'],
       ['soccerlegends','Soccer Legends','Play soccer matches'],
       ['motox3m','Moto X3M','Ride the track'],
-      ['driftboss','Drift Boss','Drift through the course']
+      ['driftboss','Drift Boss','Drift through the course'],
+      ['bloxdio','Bloxd.io','Build and explore worlds']
     ];
     const list=document.getElementById('games'),board=document.getElementById('board'),title=document.getElementById('title'),reset=document.getElementById('reset');
     let current=null;
@@ -65,7 +68,8 @@
         spacewaves:'https://spacewavesunblocked.github.io/',
         soccerlegends:'https://spacewavesunblocked.github.io/soccer-legends.html',
         motox3m:'https://moto-x3monline.github.io/',
-        driftboss:'https://drift-bossonline.github.io/'
+        driftboss:'https://drift-bossonline.github.io/',
+        bloxdio:'https://www.unbloxd.site/'
       };
 
       board.innerHTML='';
