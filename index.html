@@ -8,7 +8,7 @@
   <style>
     :root{--bg:#080b12;--panel:#111827;--card:#182235;--line:#293750;--text:#f8fafc;--muted:#9aa9bf;--accent:#38bdf8}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#14213a,#080b12 48%);color:var(--text);font:15px system-ui,sans-serif}
-    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid var(--line)}.games{display:grid;gap:10px;margin-top:22px}.game{display:grid;gap:4px;width:100%;padding:13px;text-align:left;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease}.game:hover,.game.active{border-color:var(--accent);background:#1f2d3d;transform:translateY(-1px)}.game strong{font-size:15px}.game span{color:var(--muted);font-size:12px}.sidebar h1{margin:0 0 8px;font-size:22px}.desc,.hint{color:var(--muted);line-height:1.5}.hint{margin-top:18px}.board{position:relative;min-height:100vh;padding:18px;background:linear-gradient(180deg,rgba(8,11,18,.3),transparent)}.board iframe{width:100%;height:calc(100vh - 88px);border:1px solid var(--line);border-radius:16px;background:#020817}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid var(--line);background:rgba(17,24,39,.72)}.title{font-size:18px;font-weight:700}.reset{padding:8px 12px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;cursor:pointer}.empty{display:grid;place-items:center;height:calc(100vh - 88px);border:1px dashed var(--line);border-radius:16px;color:var(--muted);background:rgba(17,24,39,.5)}main{min-width:0}@media(max-width:700px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line)}.games{grid-template-columns:repeat(2,minmax(0,1fr))}.board{height:calc(100vh - 3px)}.board iframe{height:calc(100vh - 160px)}}
+    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid #293750}.sidebar h1{margin:0 0 8px;font-size:2rem}.desc,.hint{color:var(--muted);margin:0}.games{display:grid;gap:10px;margin-top:18px}.game{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:rgba(17,24,39,.82);color:var(--text);text-align:left;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease}.game:hover{transform:translateY(-1px);border-color:var(--accent)}.game.active{background:#10253d;border-color:var(--accent);box-shadow:0 0 0 1px rgba(56,189,248,.25)}.game strong{font-size:1rem}.game span{font-size:.76rem;color:var(--muted)}main{display:flex;flex-direction:column;min-width:0}.toolbar{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line);background:rgba(13,20,34,.7);backdrop-filter:blur(8px);position:sticky;top:0;z-index:2}.title{font-size:1.5rem;font-weight:700}.reset{border:1px solid var(--line);background:#0f172a;color:var(--text);padding:9px 14px;border-radius:10px;cursor:pointer}.reset:hover{border-color:var(--accent)}.board{display:flex;align-items:stretch;justify-content:center;padding:18px;min-height:calc(100vh - 80px)}.board iframe{width:min(100%, 1200px);height:min(82vh,800px);border:1px solid var(--line);border-radius:18px;background:#000;box-shadow:0 20px 40px rgba(0,0,0,.35)}.empty{display:grid;place-items:center;color:var(--muted);font-size:1.1rem;border:1px dashed var(--line);border-radius:18px;width:min(100%,1200px);height:min(82vh,800px);background:rgba(15,23,42,.7)}@media (max-width:800px){.app{grid-template-columns:1fr}.sidebar{border-right:none;border-bottom:1px solid var(--line)}.board{padding:12px}.board iframe,.empty{height:70vh}}  
   </style>
 </head>
 <body>
@@ -32,7 +32,8 @@
       ['soccerlegends','Soccer Legends','Play soccer matches'],
       ['motox3m','Moto X3M','Ride the track'],
       ['driftboss','Drift Boss','Drift through the course'],
-      ['bloxdio','Bloxd.io','Build and explore worlds']
+      ['bloxdio','Bloxd.io','Build and explore worlds'],
+      ['miniblox','MiniBlox','Build and explore blocks']
     ];
     const list=document.getElementById('games'),board=document.getElementById('board'),title=document.getElementById('title'),reset=document.getElementById('reset');
     let current=null;
@@ -68,7 +69,8 @@
         soccerlegends:'https://spacewavesunblocked.github.io/soccer-legends.html',
         motox3m:'https://moto-x3monline.github.io/',
         driftboss:'https://drift-bossonline.github.io/',
-        bloxdio:'https://www.unbloxd.site/'
+        bloxdio:'https://www.unbloxd.site/',
+        miniblox:'https://storyhall.site/'
       };
 
       board.innerHTML='';
