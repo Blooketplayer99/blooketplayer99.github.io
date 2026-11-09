@@ -8,8 +8,7 @@
   <style>
     :root{--bg:#080b12;--panel:#111827;--card:#182235;--line:#293750;--text:#f8fafc;--muted:#9aa9bf;--accent:#38bdf8}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#14213a,#080b12 48%);color:var(--text);font:15px system-ui,sans-serif}
-    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid #293750}.sidebar h1{margin:0 0 8px;font-size:22px}.desc,.hint{color:var(--muted);line-height:1.5}.games{display:grid;gap:9px;margin:22px 0}.game{display:grid;gap:3px;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);text-align:left;cursor:pointer}.game:hover,.game.active{border-color:var(--accent);background:#1d3049}.game span{color:var(--muted);font-size:13px}main{min-width:0;padding:18px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.title{font-size:20px;font-weight:700}.reset{padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer}.board{min-height:calc(100vh - 80px);overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.board iframe{display:block;width:100%;height:calc(100vh - 80px);min-height:500px;border:0}.empty{display:grid;place-items:center;min-height:500px;color:var(--muted)}
-    @media (max-width:760px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #293750}.games{grid-template-columns:repeat(2,minmax(0,1fr))}.board iframe{min-height:70vh}}
+    button{font:inherit;touch-action:manipulation}.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{padding:22px 16px;background:#0d1422;border-right:1px solid #293750}.sidebar h1{margin:0 0 8px;font-size:22px}.desc,.hint{color:var(--muted);line-height:1.5}.games{display:grid;gap:9px;margin:22px 0}.game{display:grid;gap:3px;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);text-align:left;cursor:pointer}.game:hover,.game.active{border-color:var(--accent);background:#1d3049}.game span{color:var(--muted);font-size:13px}.main{padding:18px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.title{font-size:20px;font-weight:700}.reset{padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer}.board{min-height:calc(100vh - 80px);overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.board iframe{display:block;width:100%;height:calc(100vh - 80px);min-height:500px;border:0}.empty{display:grid;place-items:center;min-height:500px;color:var(--muted)}@media (max-width:760px){.app{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #293750}.games{grid-template-columns:repeat(2,minmax(0,1fr))}.board iframe{min-height:70vh}}
   </style>
 </head>
 <body>
@@ -34,8 +33,18 @@
       ['motox3m','Moto X3M','Ride the track'],
       ['driftboss','Drift Boss','Drift through the course']
     ];
+
     const list=document.getElementById('games'),board=document.getElementById('board'),title=document.getElementById('title'),reset=document.getElementById('reset');
     let current=null;
+
+    const links={
+      bitlife:'https://bitlife-freeonline.github.io/',
+      retrobowl:'https://amhooman.github.io/website/games/retrobowl/',
+      spacewaves:'https://spacewavesunblocked.github.io/',
+      soccerlegends:'https://spacewavesunblocked.github.io/soccer-legends.html',
+      motox3m:'https://moto-x3m.io/',
+      driftboss:'https://drift-bossonline.github.io/'
+    };
 
     games.forEach(([id,name,sub])=>{
       const button=document.createElement('button');
@@ -61,21 +70,21 @@
     }
 
     function render(){
-      const links={
-        bitlife:'https://bitlife-freeonline.github.io/',
-        retrobowl:'https://amhooman.github.io/website/games/retrobowl/',
-        spacewaves:'https://spacewavesunblocked.github.io/',
-        soccerlegends:'https://spacewavesunblocked.github.io/soccer-legends.html',
-        motox3m:'https://moto-x3monline.github.io/',
-        driftboss:'https://drift-bossonline.github.io/'
-      };
-
       board.innerHTML='';
+      const url=links[current];
+
+      if(!url){
+        board.innerHTML='<div class="empty">This game is temporarily unavailable while we verify a direct game link.</div>';
+        return;
+      }
+
       const iframe=document.createElement('iframe');
-      iframe.src=links[current];
+      iframe.src=url;
       iframe.title=title.textContent;
       iframe.loading='lazy';
       iframe.setAttribute('allowfullscreen','true');
+      iframe.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+      iframe.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-popups allow-modals');
       board.appendChild(iframe);
     }
 
